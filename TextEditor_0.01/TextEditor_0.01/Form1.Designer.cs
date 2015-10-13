@@ -90,14 +90,14 @@
             // fileToolStripMenuItem1
             // 
             this.fileToolStripMenuItem1.Name = "fileToolStripMenuItem1";
-            this.fileToolStripMenuItem1.Size = new System.Drawing.Size(181, 26);
+            this.fileToolStripMenuItem1.Size = new System.Drawing.Size(130, 26);
             this.fileToolStripMenuItem1.Text = "Project";
             this.fileToolStripMenuItem1.Click += new System.EventHandler(this.fileToolStripMenuItem1_Click);
             // 
             // tabToolStripMenuItem
             // 
             this.tabToolStripMenuItem.Name = "tabToolStripMenuItem";
-            this.tabToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.tabToolStripMenuItem.Size = new System.Drawing.Size(130, 26);
             this.tabToolStripMenuItem.Text = "Tab";
             // 
             // openToolStripMenuItem
@@ -140,7 +140,7 @@
             // clearAllToolStripMenuItem
             // 
             this.clearAllToolStripMenuItem.Name = "clearAllToolStripMenuItem";
-            this.clearAllToolStripMenuItem.Size = new System.Drawing.Size(143, 26);
+            this.clearAllToolStripMenuItem.Size = new System.Drawing.Size(136, 26);
             this.clearAllToolStripMenuItem.Text = "ClearAll";
             this.clearAllToolStripMenuItem.Click += new System.EventHandler(this.clearAllToolStripMenuItem_Click);
             // 
