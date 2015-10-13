@@ -92,6 +92,9 @@ namespace TextEditor_0._01
             fileName = "untitled";
         }
 
-        
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
