@@ -6,3 +6,5 @@ c:\users\administrator\documents\visual studio 2015\Projects\TextEditor_0.01\Tex
 c:\users\administrator\documents\visual studio 2015\Projects\TextEditor_0.01\TextEditor_0.01\obj\Debug\TextEditor_0.01.exe
 c:\users\administrator\documents\visual studio 2015\Projects\TextEditor_0.01\TextEditor_0.01\obj\Debug\TextEditor_0.01.pdb
 C:\Users\Administrator\Documents\Visual Studio 2015\Projects\TextEditor_0.01\TextEditor_0.01\obj\Debug\TextEditor_0.01.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\GitHub\STEM_code_editor\TextEditor_0.01\TextEditor_0.01\obj\Debug\TextEditor_0.01.exe
+C:\Users\Administrator\Documents\GitHub\STEM_code_editor\TextEditor_0.01\TextEditor_0.01\obj\Debug\TextEditor_0.01.pdb
