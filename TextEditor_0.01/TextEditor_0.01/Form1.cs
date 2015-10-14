@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
+using System.Drawing;  //default, but not needed unless you are drawing
+using System.Linq;     //same
 using System.Text;
 using System.Windows.Forms;
 
 namespace TextEditor_0._01
 {
-    public partial class Form1 : Form
+    public partial class Form1 : Form  //probably not the best name for the form. Maybe MainForm or EditingForm.
     {
         private String fileName;
         private bool isFirstChange = true;
@@ -20,6 +20,7 @@ namespace TextEditor_0._01
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //if you're file is dirty, are you sure you want to exit?
             System.Environment.Exit(-1);
         }
 
@@ -32,7 +33,7 @@ namespace TextEditor_0._01
                 textBox1.Text = openFile.ReadToEnd();
                 openFile.Close();
                 tabControl1.SelectedTab.Text = System.IO.Path.GetFileName(openFileDialog1.FileName);
-                isFirstChange = true;
+                isFirstChange = true;  //maybe something like fileIsDirty would be better.
             }
         }
 
@@ -43,7 +44,10 @@ namespace TextEditor_0._01
 
         private void newTabToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            //adding a new tab means adding a new (empty) file to edit or opening another file.
+            //this implies that you need something that represents and open file that you're editing.
+            // --name, shortname, cursor position, dirty/clean, undo stack, etc.
+            //switching tabs means switching edit file contexts.
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
