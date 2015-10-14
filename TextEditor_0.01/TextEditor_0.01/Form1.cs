@@ -59,13 +59,13 @@ namespace TextEditor_0._01
         {
             if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                System.IO.StreamWriter saveFile = new System.IO.StreamWriter(openFileDialog1.FileName);
-                fileName = openFileDialog1.FileName;
+                System.IO.StreamWriter saveFile = new System.IO.StreamWriter(saveFileDialog1.FileName);
+                fileName = saveFileDialog1.FileName;
                 String[] lines = textBox1.Lines;
                 foreach (string line in lines)
                     saveFile.WriteLine(line);
                 saveFile.Close();
-                tabControl1.SelectedTab.Text = System.IO.Path.GetFileName(openFileDialog1.FileName);
+                tabControl1.SelectedTab.Text = System.IO.Path.GetFileName(saveFileDialog1.FileName);
                 isFirstChange = true;
             }
         }
