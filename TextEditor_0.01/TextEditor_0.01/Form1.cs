@@ -81,7 +81,7 @@ namespace TextEditor_0._01
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-        
+            
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
