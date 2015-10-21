@@ -1,0 +1,8 @@
+ScintillNET documentation - these are pretty good.
+I'll put a link in the code too.
+
+https://github.com/jacobslusser/ScintillaNET/wiki
+
+
+Some example of how to do highlighting and code folding are here:
+http://vipinkumaryadav.com/
