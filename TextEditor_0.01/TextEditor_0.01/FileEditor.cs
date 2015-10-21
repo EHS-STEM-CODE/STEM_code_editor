@@ -55,4 +55,9 @@ public class FileEditor
     {
         return path;
     }
+
+    public string ShortName()
+    {
+        return shortName;
+    }
 }
