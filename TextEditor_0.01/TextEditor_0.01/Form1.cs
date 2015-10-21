@@ -23,35 +23,6 @@ namespace TextEditor_0._01
             OnNewFile();
         }
 
-        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Console.WriteLine("fsdfsd");
-            foreach (FileEditor fileEditor in fileEditors)
-            {
-                Console.WriteLine(fileEditor.ShortName());
-                if (fileEditor.IsDirty())
-                {
-                    DialogResult result = MessageBox.Show("Do you want to save \"" + fileEditor.ShortName() + "\"", "Important Query", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                    if (result == DialogResult.Yes)
-                    {
-                        if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                        {
-                            System.IO.StreamWriter saveFile = new System.IO.StreamWriter(saveFileDialog1.FileName);
-                            currentFileEditor.SetPath(saveFileDialog1.FileName);
-                            String[] lines = textBox1.Lines;
-                            foreach (string line in lines)
-                                saveFile.WriteLine(line);
-                            saveFile.Close();
-                            tabControl1.SelectedTab.Text = currentFileEditor.Path(); //System.IO.Path.GetFileName(saveFileDialog1.FileName);
-                            currentFileEditor.SetDirty(false);
-                            currentFileEditor.SetNew(false);
-                        }
-                    }
-                }
-            }
-            System.Environment.Exit(-1);
-        }
-
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
@@ -131,6 +102,47 @@ namespace TextEditor_0._01
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            saveAs();
+        }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveAs();
+        }
+
+        private void saveAs()
+        {
+            foreach (FileEditor fileEditor in fileEditors)
+            {
+                if (fileEditor.IsDirty())
+                {
+                    DialogResult result = MessageBox.Show("Do you want to save \"" + fileEditor.ShortName() + "\"", "Important Query", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
+                    {
+                        if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                        {
+                            System.IO.StreamWriter saveFile = new System.IO.StreamWriter(saveFileDialog1.FileName);
+                            currentFileEditor.SetPath(saveFileDialog1.FileName);
+                            String[] lines = textBox1.Lines;
+                            foreach (string line in lines)
+                                saveFile.WriteLine(line);
+                            saveFile.Close();
+                            tabControl1.SelectedTab.Text = currentFileEditor.Path(); //System.IO.Path.GetFileName(saveFileDialog1.FileName);
+                            currentFileEditor.SetDirty(false);
+                            currentFileEditor.SetNew(false);
+                            System.Environment.Exit(-1);
+                        }
+                    }
+                    else if (result == DialogResult.No)
+                    {
+                        System.Environment.Exit(-1);
+                    }
+                }
+            }
         }
     }
 }
