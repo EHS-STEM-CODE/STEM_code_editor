@@ -16,7 +16,7 @@ namespace TextEditor_0._02
         {
             InitializeComponent();
             scintilla1.Margins[0].Width = 32;   //Margins allow for up to 9999 lines -> Then it wraps around
-            scintilla1.conf
+            ScintillaNET.ConfigurationManager.Language = "html";
         }
        
       
