@@ -9,5 +9,13 @@ http://vipinkumaryadav.com/
 
 Derek & David:
 
-Add the list of 4 items here that I wrote on the whiteboard
-during our first meeting.
+List of 4 items/goals for the intership:
+1) Code editing app
+	-Basic window opening with a single tab
+	-Basic open/close/save/save as in progress
+	-Scintilla highlighting in progress
+	-Combine Scintilla and tab program - next step
+	-Be able to open and select different tabs - next step
+2) Making the code editing interpreted/compiled
+3) Communicate with Unity via a middle program
+4) Communicate with Unity via TCP sockets
