@@ -59,7 +59,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 1, 0, 1);
-            this.menuStrip1.Size = new System.Drawing.Size(660, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(542, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -135,11 +135,12 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(0, 25);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 24);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(498, 449);
+            this.tabControl1.Size = new System.Drawing.Size(542, 477);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPage1
@@ -149,7 +150,7 @@
             this.tabPage1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.tabPage1.Size = new System.Drawing.Size(490, 423);
+            this.tabPage1.Size = new System.Drawing.Size(534, 451);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -157,11 +158,12 @@
             // scintilla
             // 
             this.scintilla.AutomaticFold = ScintillaNET.AutomaticFold.Show;
+            this.scintilla.Dock = System.Windows.Forms.DockStyle.Fill;
             this.scintilla.Lexer = ScintillaNET.Lexer.Cpp;
-            this.scintilla.Location = new System.Drawing.Point(0, 0);
+            this.scintilla.Location = new System.Drawing.Point(2, 3);
             this.scintilla.Margin = new System.Windows.Forms.Padding(2);
             this.scintilla.Name = "scintilla";
-            this.scintilla.Size = new System.Drawing.Size(489, 427);
+            this.scintilla.Size = new System.Drawing.Size(530, 445);
             this.scintilla.TabIndex = 2;
             this.scintilla.UseTabs = false;
             this.scintilla.Click += new System.EventHandler(this.scintilla1_Click);
@@ -181,7 +183,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(660, 536);
+            this.ClientSize = new System.Drawing.Size(542, 501);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;

@@ -6,3 +6,8 @@ https://github.com/jacobslusser/ScintillaNET/wiki
 
 Some example of how to do highlighting and code folding are here:
 http://vipinkumaryadav.com/
+
+Derek & David:
+
+Add the list of 4 items here that I wrote on the whiteboard
+during our first meeting.

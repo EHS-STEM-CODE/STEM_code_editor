@@ -96,6 +96,7 @@ namespace TextEditor_0._01
             currentFileEditor = new FileEditor();
             tabControl1.SelectedTab.Text = currentFileEditor.TabLabel();
             fileEditors.Add(currentFileEditor);
+            //add a tab to tabContro
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -110,8 +111,17 @@ namespace TextEditor_0._01
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            closeFile();
+            //closeFile();
+            Close();
         }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            Console.WriteLine("The application is closing...");
+            DialogResult result = MessageBox.Show("Do you really want to quit? ", "Closing Application", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+            e.Cancel = !(result == DialogResult.Yes);
+        }
+
 
         private void closeFile()
         {
@@ -146,6 +156,12 @@ namespace TextEditor_0._01
                 currentFileEditor.SetNew(false);
                 System.Environment.Exit(-1);
             }
+        }
+
+        //maybe a better way to update the display
+        private void UpdateDisplay()
+        {
+            tabControl1.SelectedTab.Text = currentFileEditor.TabLabel();
         }
     }
     
