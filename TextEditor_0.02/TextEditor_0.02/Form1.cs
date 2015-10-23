@@ -25,8 +25,7 @@ namespace TextEditor_0._02
             scintilla.Margins[0].Width = 32;   //Margins allow for up to 9999 lines -> Then it wraps around
             scintilla.Lexer = Lexer.Cpp;
             Console.WriteLine(scintilla.DescribeKeywordSets());
-
-            scintilla.Enabled = true;
+           
 
             scintilla.Styles[Style.Default].Font = "Consolas";
             scintilla.Styles[Style.Default].Size = 12;

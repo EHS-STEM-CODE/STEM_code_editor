@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ScintillaNET;
+using System.Windows.Forms;
 
 public class FileEditor
 {
     private string path;
     private string shortName;
+    private TextBox txt;
     bool isDirty;
     bool isNew;
 
@@ -16,6 +19,13 @@ public class FileEditor
         isNew = true;
         path = "";
         shortName = "untitled";
+        txt = new TextBox(); //Create a new text box
+        
+    }
+
+    public TextBox getTextBox()
+    {
+        return (txt);
     }
 
     public string TabLabel()
@@ -59,5 +69,20 @@ public class FileEditor
     public string ShortName()
     {
         return shortName;
+    }
+
+    public String getText()
+    {
+        return (txt.Text);
+    }
+
+    public String[] getTextLines()
+    {
+        return (txt.Lines);
+    }
+
+    public void setText(String t)
+    {
+        txt.Text = t;
     }
 }

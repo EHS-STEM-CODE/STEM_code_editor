@@ -7,6 +7,7 @@ using System.Drawing;  //default, but not needed unless you are drawing
 using System.Linq;     //same
 using System.Text;
 using System.Windows.Forms;
+using ScintillaNET;
 
 namespace TextEditor_0._01
 {
@@ -14,10 +15,14 @@ namespace TextEditor_0._01
     {
         private FileEditor currentFileEditor;
         private ArrayList fileEditors;
+        private TabControl tabControl;
         public MainForm()
         {
             currentFileEditor = null;
             fileEditors = new ArrayList();
+            tabControl = new TabControl();
+            tabControl.Location = new System.Drawing.
+            tabControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Left;
             InitializeComponent();
             OnNewFile();
         }
@@ -30,15 +35,15 @@ namespace TextEditor_0._01
                 currentFileEditor = new FileEditor();
                 fileEditors.Add(currentFileEditor);
                 currentFileEditor.SetPath(openFileDialog1.FileName);
-                textBox1.Text = openFile.ReadToEnd();
+                currentFileEditor.setText(openFile.ReadToEnd());
                 openFile.Close();
-                tabControl1.SelectedTab.Text = System.IO.Path.GetFileName(openFileDialog1.FileName);
+                tabControl.SelectedTab.Text = System.IO.Path.GetFileName(openFileDialog1.FileName);
             }
         }
 
         private void clearAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            textBox1.Text = "";
+            currentFileEditor.setText("");
         }
 
         private void newTabToolStripMenuItem_Click(object sender, EventArgs e)
@@ -60,11 +65,11 @@ namespace TextEditor_0._01
             {
                 System.IO.StreamWriter saveFile = new System.IO.StreamWriter(saveFileDialog1.FileName);
                 currentFileEditor.SetPath(saveFileDialog1.FileName);
-                String[] lines = textBox1.Lines;
+                String[] lines = currentFileEditor.getTextLines();
                 foreach (string line in lines)
                     saveFile.WriteLine(line);
                 saveFile.Close();
-                tabControl1.SelectedTab.Text = System.IO.Path.GetFileName(saveFileDialog1.FileName);
+                tabControl.SelectedTab.Text = System.IO.Path.GetFileName(saveFileDialog1.FileName);
                 currentFileEditor.SetDirty(false);
                 currentFileEditor.SetNew(false);
             }
@@ -72,17 +77,7 @@ namespace TextEditor_0._01
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            if (textBox1.Text.Contains("Make me colorful"))
-                textBox1.ForeColor = Color.Sienna;
-            if (textBox1.Text.Contains("Hide me"))
-                textBox1.ForeColor = Color.White;
-            if (textBox1.Text.Contains("Bring me back!"))
-                textBox1.ForeColor = Color.Black;
-            if (currentFileEditor.IsDirty() == false)
-            {
-                tabControl1.SelectedTab.Text = tabControl1.SelectedTab.Text + "*";
-                currentFileEditor.SetDirty(true);
-            }
+           //Method not needed anymore?
         }
 
         private void fileToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -92,11 +87,11 @@ namespace TextEditor_0._01
 
         private void OnNewFile()
         {
-            textBox1.Text = "";
-            currentFileEditor = new FileEditor();
-            tabControl1.SelectedTab.Text = currentFileEditor.TabLabel();
-            fileEditors.Add(currentFileEditor);
-            //add a tab to tabContro
+            currentFileEditor = new FileEditor();       //Create a new file editor
+            fileEditors.Add(currentFileEditor);         //Add it to the arrayList
+            TabPage newTab = new TabPage(currentFileEditor.ShortName()); //Create a new tab
+            tabControl.TabPages.Add(newTab);                            //Add the new tab to the tabController
+            newTab.Controls.Add(currentFileEditor.getTextBox()); //Add the new text box to the tab            
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -147,11 +142,11 @@ namespace TextEditor_0._01
             {
                 System.IO.StreamWriter saveFile = new System.IO.StreamWriter(saveFileDialog1.FileName);
                 currentFileEditor.SetPath(saveFileDialog1.FileName);
-                String[] lines = textBox1.Lines;
+                String[] lines = currentFileEditor.getTextLines();
                 foreach (string line in lines)
                     saveFile.WriteLine(line);
                 saveFile.Close();
-                tabControl1.SelectedTab.Text = currentFileEditor.Path(); //System.IO.Path.GetFileName(saveFileDialog1.FileName);
+                tabControl.SelectedTab.Text = currentFileEditor.Path(); //System.IO.Path.GetFileName(saveFileDialog1.FileName);
                 currentFileEditor.SetDirty(false);
                 currentFileEditor.SetNew(false);
                 System.Environment.Exit(-1);
@@ -161,7 +156,7 @@ namespace TextEditor_0._01
         //maybe a better way to update the display
         private void UpdateDisplay()
         {
-            tabControl1.SelectedTab.Text = currentFileEditor.TabLabel();
+            tabControl.SelectedTab.Text = currentFileEditor.TabLabel();
         }
     }
     
