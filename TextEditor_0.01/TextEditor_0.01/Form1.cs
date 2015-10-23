@@ -18,12 +18,20 @@ namespace TextEditor_0._01
         private TabControl tabControl;
         public MainForm()
         {
+            InitializeComponent();
+            OnNewWindow();
+        }
+
+        private void OnNewWindow()
+        {
             currentFileEditor = null;
             fileEditors = new ArrayList();
             tabControl = new TabControl();
-            tabControl.Location = new System.Drawing.
+            tabControl.Name = "tabControl";
+            tabControl.Location = new Point(0, 25);
+            tabControl.Size = new Size(768, 765);
             tabControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Left;
-            InitializeComponent();
+            Controls.Add(tabControl);
             OnNewFile();
         }
 
@@ -91,6 +99,7 @@ namespace TextEditor_0._01
             fileEditors.Add(currentFileEditor);         //Add it to the arrayList
             TabPage newTab = new TabPage(currentFileEditor.ShortName()); //Create a new tab
             tabControl.TabPages.Add(newTab);                            //Add the new tab to the tabController
+
             newTab.Controls.Add(currentFileEditor.getTextBox()); //Add the new text box to the tab            
         }
 
@@ -157,6 +166,17 @@ namespace TextEditor_0._01
         private void UpdateDisplay()
         {
             tabControl.SelectedTab.Text = currentFileEditor.TabLabel();
+        }
+
+        protected override void OnResizeBegin(EventArgs e)      //Next two methods prevent flickering while resizing the window
+        {
+            SuspendLayout();
+            base.OnResizeBegin(e);
+        }
+        protected override void OnResizeEnd(EventArgs e)
+        {
+            ResumeLayout();
+            base.OnResizeEnd(e);
         }
     }
     

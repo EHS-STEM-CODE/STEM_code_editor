@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ScintillaNET;
 using System.Windows.Forms;
+using System.Drawing;
 
 public class FileEditor
 {
@@ -20,7 +21,9 @@ public class FileEditor
         path = "";
         shortName = "untitled";
         txt = new TextBox(); //Create a new text box
-        
+        txt.Multiline = true;
+        txt.Location = new Point(0, 0);
+        txt.Size = new Size(752, 720);
     }
 
     public TextBox getTextBox()
