@@ -90,7 +90,7 @@ namespace TextEditor_0._01
 
         private void fileToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            OnNewFile();
+            
         }
 
         private void OnNewFile()
@@ -177,6 +177,11 @@ namespace TextEditor_0._01
         {
             ResumeLayout();
             base.OnResizeEnd(e);
+        }
+
+        private void tabToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OnNewFile();
         }
     }
     

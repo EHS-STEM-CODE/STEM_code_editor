@@ -24,6 +24,9 @@ public class FileEditor
         txt.Multiline = true;
         txt.Location = new Point(0, 0);
         txt.Size = new Size(752, 720);
+        txt.Font = new Font("Consolas", 12F, System.Drawing.FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+
+
     }
 
     public TextBox getTextBox()
