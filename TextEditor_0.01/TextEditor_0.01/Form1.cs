@@ -73,9 +73,11 @@ namespace TextEditor_0._01
             {
                 System.IO.StreamWriter saveFile = new System.IO.StreamWriter(saveFileDialog1.FileName);
                 currentFileEditor.SetPath(saveFileDialog1.FileName);
-                String[] lines = currentFileEditor.getTextLines();
-                foreach (string line in lines)
-                    saveFile.WriteLine(line);
+                String lines = currentFileEditor.getText();
+                saveFile.Write(lines);
+                //String[] lines = currentFileEditor.getText();
+                //foreach (string line in lines)
+                //    saveFile.WriteLine(line);
                 saveFile.Close();
                 tabControl.SelectedTab.Text = System.IO.Path.GetFileName(saveFileDialog1.FileName);
                 currentFileEditor.SetDirty(false);
@@ -83,10 +85,7 @@ namespace TextEditor_0._01
             }
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-           //Method not needed anymore?
-        }
+      
 
         private void fileToolStripMenuItem1_Click(object sender, EventArgs e)
         {
@@ -151,9 +150,12 @@ namespace TextEditor_0._01
             {
                 System.IO.StreamWriter saveFile = new System.IO.StreamWriter(saveFileDialog1.FileName);
                 currentFileEditor.SetPath(saveFileDialog1.FileName);
-                String[] lines = currentFileEditor.getTextLines();
-                foreach (string line in lines)
-                    saveFile.WriteLine(line);
+                String lines = currentFileEditor.getText();
+                saveFile.Write(lines);
+
+                //String[] lines = currentFileEditor.getText();
+                //foreach (string line in lines)
+                //    saveFile.WriteLine(line);
                 saveFile.Close();
                 tabControl.SelectedTab.Text = currentFileEditor.Path(); //System.IO.Path.GetFileName(saveFileDialog1.FileName);
                 currentFileEditor.SetDirty(false);
