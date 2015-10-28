@@ -8,12 +8,12 @@ using System.Drawing;
 
 public class FileEditor
 {
-    private Scintilla sci = new Scintilla();
+    private Scintilla sci;
     private string path;
     private string shortName;
-
-    bool isDirty;
-    bool isNew;
+    
+    private bool isDirty;
+    private bool isNew;
 
     public FileEditor()
     {
@@ -21,6 +21,7 @@ public class FileEditor
         isNew = true;
         path = "";
         shortName = "untitled";
+        sci = new Scintilla();
         initializeScintilla();
 
     }
@@ -122,13 +123,13 @@ public class FileEditor
         return shortName;
     }
 
-    public void setText(String t)
-    {
-        //Write text to the window
-    }
-
     public String getText()
     {
         return (sci.GetTextRange(0, sci.TextLength));
+    }
+
+    public void SetText(String moreText)
+    {
+        sci.AppendText(moreText);
     }
 }

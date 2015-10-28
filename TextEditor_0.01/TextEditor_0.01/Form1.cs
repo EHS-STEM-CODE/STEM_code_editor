@@ -16,6 +16,7 @@ namespace TextEditor_0._01
         private FileEditor currentFileEditor;
         private ArrayList fileEditors;
         private TabControl tabControl;
+
         public MainForm()
         {
             InitializeComponent();
@@ -43,15 +44,16 @@ namespace TextEditor_0._01
                 currentFileEditor = new FileEditor();
                 fileEditors.Add(currentFileEditor);
                 currentFileEditor.SetPath(openFileDialog1.FileName);
-                currentFileEditor.setText(openFile.ReadToEnd());
+                currentFileEditor.SetText(openFile.ReadToEnd());
                 openFile.Close();
                 tabControl.SelectedTab.Text = System.IO.Path.GetFileName(openFileDialog1.FileName);
+                currentFileEditor.SetText("fsdfsd");
             }
         }
 
         private void clearAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            currentFileEditor.setText("");
+            currentFileEditor.SetText("");
         }
 
         private void newTabToolStripMenuItem_Click(object sender, EventArgs e)
