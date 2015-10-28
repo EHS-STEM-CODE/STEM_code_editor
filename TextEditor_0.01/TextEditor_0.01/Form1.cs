@@ -20,6 +20,7 @@ namespace TextEditor_0._01
         public MainForm()
         {
             InitializeComponent();
+            this.DoubleBuffered = true;
             OnNewWindow();
         }
 
@@ -29,6 +30,8 @@ namespace TextEditor_0._01
             fileEditors = new ArrayList();
             tabControl = new TabControl();
             tabControl.Name = "tabControl";
+
+            //!! dock control fill loses the top of the tabs under the menu.
             tabControl.Location = new Point(0, 25);
             tabControl.Size = new Size(768, 765);
             tabControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Left;
@@ -38,17 +41,7 @@ namespace TextEditor_0._01
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                System.IO.StreamReader openFile = new System.IO.StreamReader(openFileDialog1.FileName);
-                currentFileEditor = new FileEditor();
-                fileEditors.Add(currentFileEditor);
-                currentFileEditor.SetPath(openFileDialog1.FileName);
-                currentFileEditor.SetText(openFile.ReadToEnd());
-                openFile.Close();
-                tabControl.SelectedTab.Text = System.IO.Path.GetFileName(openFileDialog1.FileName);
-                currentFileEditor.SetText("fsdfsd");
-            }
+            OnOpenFile();
         }
 
         private void clearAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -66,7 +59,6 @@ namespace TextEditor_0._01
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -102,6 +94,26 @@ namespace TextEditor_0._01
             tabControl.TabPages.Add(newTab);                            //Add the new tab to the tabController
 
             newTab.Controls.Add(currentFileEditor.getScintilla()); //Add the new text box to the tab            
+        }
+
+        private void OnOpenFile()
+        {
+            if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                System.IO.StreamReader openFile = new System.IO.StreamReader(openFileDialog1.FileName);
+
+                currentFileEditor = new FileEditor();       //Create a new file editor
+                fileEditors.Add(currentFileEditor);         //Add it to the arrayList
+                TabPage newTab = new TabPage(openFileDialog1.FileName); //Create a new tab
+                tabControl.TabPages.Add(newTab);            //Add the new tab to the tabController
+                
+                //!! needs to select the active tab.
+                newTab.Controls.Add(currentFileEditor.getScintilla()); //Add the new text box to the tab            
+
+                currentFileEditor.SetPath(openFileDialog1.FileName);
+                currentFileEditor.SetText(openFile.ReadToEnd());
+                openFile.Close();
+            }
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -172,16 +184,19 @@ namespace TextEditor_0._01
             tabControl.SelectedTab.Text = currentFileEditor.TabLabel();
         }
 
-        protected override void OnResizeBegin(EventArgs e)      //Next two methods prevent flickering while resizing the window
-        {
-            SuspendLayout();
-            base.OnResizeBegin(e);
-        }
-        protected override void OnResizeEnd(EventArgs e)
-        {
-            ResumeLayout();
-            base.OnResizeEnd(e);
-        }
+
+        //!! you many want to just remove these
+        // should not have a flicker problem.
+        //protected override void OnResizeBegin(EventArgs e)      //Next two methods prevent flickering while resizing the window
+        //{
+        //    SuspendLayout();
+        //    base.OnResizeBegin(e);
+        //}
+        //protected override void OnResizeEnd(EventArgs e)
+        //{
+        //    ResumeLayout();
+        //    base.OnResizeEnd(e);
+        //}
 
         private void tabToolStripMenuItem_Click(object sender, EventArgs e)
         {
