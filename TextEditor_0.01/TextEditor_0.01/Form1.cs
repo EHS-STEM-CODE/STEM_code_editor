@@ -99,7 +99,7 @@ namespace TextEditor_0._01
             TabPage newTab = new TabPage(currentFileEditor.ShortName()); //Create a new tab
             tabControl.TabPages.Add(newTab);                            //Add the new tab to the tabController
 
-            newTab.Controls.Add(currentFileEditor.getTextBox()); //Add the new text box to the tab            
+            newTab.Controls.Add(currentFileEditor.getScintilla()); //Add the new text box to the tab            
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)

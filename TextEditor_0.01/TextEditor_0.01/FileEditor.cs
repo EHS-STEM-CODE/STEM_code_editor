@@ -74,7 +74,7 @@ public class FileEditor
                                         Math NaN name Number Object prototype String toString undefined valueOf");
     }
 
-    public Scintilla getTextBox()
+    public Scintilla getScintilla()
     {
         return (sci);
     }
