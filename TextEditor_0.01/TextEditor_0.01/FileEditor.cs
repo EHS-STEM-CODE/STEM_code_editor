@@ -23,7 +23,6 @@ public class FileEditor
         shortName = "untitled";
         sci = new Scintilla();
         initializeScintilla();
-
     }
 
     private void initializeScintilla()
@@ -73,6 +72,8 @@ public class FileEditor
         //javascript global classes and typedef keywords Style: GlobalClass
         sci.SetKeywords(3, @"Array Date eval hasOwnProperty Infinity isFinite isNaN isPrototypeOf length
                                         Math NaN name Number Object prototype String toString undefined valueOf");
+
+        sci.TextChanged += TextWasChanged;
     }
 
     public Scintilla getScintilla()
@@ -132,4 +133,10 @@ public class FileEditor
     {
         sci.Text = moreText;
     }
+
+    public void TextWasChanged(object sender, EventArgs e)
+    {
+        isDirty = true;
+    }
+
 }
