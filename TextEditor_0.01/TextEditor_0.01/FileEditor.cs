@@ -130,6 +130,6 @@ public class FileEditor
 
     public void SetText(String moreText)
     {
-        sci.AppendText(moreText);
+        sci.Text = moreText;
     }
 }
