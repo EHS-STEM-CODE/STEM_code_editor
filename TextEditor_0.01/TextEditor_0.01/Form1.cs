@@ -179,10 +179,10 @@ namespace TextEditor_0._01
 
         //maybe a better way to update the display
         //!! NEEDED?
-        /*private void UpdateDisplay()
+        private void UpdateDisplay()
         {
             tabControl.SelectedTab.Text = currentFileEditor.TabLabel();
-        }*/
+        }
 
 
         //!! you many want to just remove these
