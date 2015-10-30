@@ -74,6 +74,7 @@ public class FileEditor
                                         Math NaN name Number Object prototype String toString undefined valueOf");
 
         sci.TextChanged += TextWasChanged;
+        
     }
 
     public Scintilla getScintilla()

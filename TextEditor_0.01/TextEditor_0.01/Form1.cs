@@ -31,6 +31,9 @@ namespace TextEditor_0._01
             tabControl = new TabControl();
             tabControl.Name = "tabControl";
 
+            tabControl.Selected += TabControl_Selected;     //TabControl_Selected callled on tab click
+      
+
             //!! dock control fill loses the top of the tabs under the menu.
             tabControl.Location = new Point(0, 25);
             tabControl.Size = new Size(768, 765);
@@ -38,6 +41,16 @@ namespace TextEditor_0._01
             Controls.Add(tabControl);
             OnNewFile();
         }
+
+        //Method called on tab control click
+        private void TabControl_Selected(object sender, TabControlEventArgs e)
+        {
+            Console.Write(tabControl.SelectedIndex);
+            //!! set currentFileEditor to the fileEditor at index tabControl.SelectedIndex;  Don't know how to do this in C#
+            //currentFileEditor = fileEditors.
+        }
+
+
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -59,27 +72,27 @@ namespace TextEditor_0._01
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            save(currentFileEditor.Path());
+        }
+
+        private void save(String path)
+        {
+            System.IO.StreamWriter saveFile = new System.IO.StreamWriter(path);
+            String lines = currentFileEditor.getText();
+            saveFile.Write(lines);
+            saveFile.Close();
+            currentFileEditor.SetDirty(false);
+            currentFileEditor.SetNew(false);
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                System.IO.StreamWriter saveFile = new System.IO.StreamWriter(saveFileDialog1.FileName);
+                save(saveFileDialog1.FileName);
                 currentFileEditor.SetPath(saveFileDialog1.FileName);
-                String lines = currentFileEditor.getText();
-                saveFile.Write(lines);
-                //String[] lines = currentFileEditor.getText();
-                //foreach (string line in lines)
-                //    saveFile.WriteLine(line);
-                saveFile.Close();
-                tabControl.SelectedTab.Text = System.IO.Path.GetFileName(saveFileDialog1.FileName);
-                currentFileEditor.SetDirty(false);
-                currentFileEditor.SetNew(false);
             }
         }
-
-      
 
         private void fileToolStripMenuItem1_Click(object sender, EventArgs e)
         {
@@ -108,7 +121,8 @@ namespace TextEditor_0._01
                 tabControl.TabPages.Add(newTab);            //Add the new tab to the tabController
                 
                 //!! needs to select the active tab.
-                newTab.Controls.Add(currentFileEditor.getScintilla()); //Add the new text box to the tab            
+                newTab.Controls.Add(currentFileEditor.getScintilla()); //Add the new text box to the tab    
+                tabControl.SelectTab(fileEditors.Count-1);        
 
                 currentFileEditor.SetPath(openFileDialog1.FileName);
                 currentFileEditor.SetText(openFile.ReadToEnd());
@@ -179,10 +193,11 @@ namespace TextEditor_0._01
         }
 
         //maybe a better way to update the display
-        private void UpdateDisplay()
+        //!! NEEDED?
+        /*private void UpdateDisplay()
         {
             tabControl.SelectedTab.Text = currentFileEditor.TabLabel();
-        }
+        }*/
 
 
         //!! you many want to just remove these
