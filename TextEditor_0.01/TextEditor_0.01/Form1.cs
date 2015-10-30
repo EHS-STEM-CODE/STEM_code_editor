@@ -72,7 +72,7 @@ namespace TextEditor_0._01
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            save(currentFileEditor.Path());
+            if(!currentFileEditor.IsNew())save(currentFileEditor.Path());
         }
 
         private void save(String path)
@@ -87,11 +87,7 @@ namespace TextEditor_0._01
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                save(saveFileDialog1.FileName);
-                currentFileEditor.SetPath(saveFileDialog1.FileName);
-            }
+            saveAs();
         }
 
         private void fileToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -106,7 +102,8 @@ namespace TextEditor_0._01
             TabPage newTab = new TabPage(currentFileEditor.ShortName()); //Create a new tab
             tabControl.TabPages.Add(newTab);                            //Add the new tab to the tabController
 
-            newTab.Controls.Add(currentFileEditor.getScintilla()); //Add the new text box to the tab            
+            newTab.Controls.Add(currentFileEditor.getScintilla()); //Add the new text box to the tab 
+            tabControl.SelectTab(fileEditors.Count - 1);    //Select the tab that was just created
         }
 
         private void OnOpenFile()
@@ -120,7 +117,6 @@ namespace TextEditor_0._01
                 TabPage newTab = new TabPage(openFileDialog1.FileName); //Create a new tab
                 tabControl.TabPages.Add(newTab);            //Add the new tab to the tabController
                 
-                //!! needs to select the active tab.
                 newTab.Controls.Add(currentFileEditor.getScintilla()); //Add the new text box to the tab    
                 tabControl.SelectTab(fileEditors.Count-1);        
 
@@ -153,7 +149,6 @@ namespace TextEditor_0._01
             e.Cancel = !(result == DialogResult.Yes);
         }
 
-
         private void closeFile()
         {
             foreach (FileEditor fileEditor in fileEditors)
@@ -176,19 +171,9 @@ namespace TextEditor_0._01
         {
             if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                System.IO.StreamWriter saveFile = new System.IO.StreamWriter(saveFileDialog1.FileName);
+                save(saveFileDialog1.FileName);
                 currentFileEditor.SetPath(saveFileDialog1.FileName);
-                String lines = currentFileEditor.getText();
-                saveFile.Write(lines);
-
-                //String[] lines = currentFileEditor.getText();
-                //foreach (string line in lines)
-                //    saveFile.WriteLine(line);
-                saveFile.Close();
-                tabControl.SelectedTab.Text = currentFileEditor.Path(); //System.IO.Path.GetFileName(saveFileDialog1.FileName);
-                currentFileEditor.SetDirty(false);
                 currentFileEditor.SetNew(false);
-                System.Environment.Exit(-1);
             }
         }
 
