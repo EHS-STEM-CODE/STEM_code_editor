@@ -72,6 +72,7 @@ namespace TextEditor_0._01
             saveFile.Close();
             currentFileEditor.SetDirty(false);
             currentFileEditor.SetNew(false);
+            tabControl.SelectedTab.Text = currentFileEditor.ShortName();
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
