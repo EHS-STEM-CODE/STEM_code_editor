@@ -107,7 +107,7 @@ namespace TextEditor_0._01
                 FileEditor newFileEditor = new FileEditor(tabControl, openFileDialog1.FileName, openFileDialog1.SafeFileName, openFile.ReadToEnd());
                 TabPage newTab = new TabPage(openFileDialog1.SafeFileName);
                 tabControl.TabPages.Add(newTab);
-
+                currentFileEditor = newFileEditor;
                 fileEditors.Add(newFileEditor);
                 newTab.Controls.Add(currentFileEditor.getScintilla()); 
                 tabControl.SelectTab(fileEditors.Count-1);        
