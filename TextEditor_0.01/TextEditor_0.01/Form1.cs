@@ -42,12 +42,9 @@ namespace TextEditor_0._01
             OnNewFile();
         }
 
-        //Method called on tab control click
         private void TabControl_Selected(object sender, TabControlEventArgs e)
         {
-            Console.Write(tabControl.SelectedIndex);
-            //!! set currentFileEditor to the fileEditor at index tabControl.SelectedIndex;  Don't know how to do this in C#
-            //currentFileEditor = fileEditors.
+            currentFileEditor = (FileEditor)fileEditors[tabControl.SelectedIndex];
         }
 
 
@@ -72,13 +69,14 @@ namespace TextEditor_0._01
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(!currentFileEditor.IsNew())save(currentFileEditor.Path());
+            if(!currentFileEditor.IsNew())
+                save(currentFileEditor.Path());
         }
 
         private void save(String path)
         {
             System.IO.StreamWriter saveFile = new System.IO.StreamWriter(path);
-            String lines = currentFileEditor.getText();
+            String lines = currentFileEditor.GetText();
             saveFile.Write(lines);
             saveFile.Close();
             currentFileEditor.SetDirty(false);

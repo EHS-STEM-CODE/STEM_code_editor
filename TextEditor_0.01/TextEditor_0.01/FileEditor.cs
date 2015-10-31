@@ -125,7 +125,7 @@ public class FileEditor
         return shortName;
     }
 
-    public String getText()
+    public String GetText()
     {
         return (sci.GetTextRange(0, sci.TextLength));
     }
