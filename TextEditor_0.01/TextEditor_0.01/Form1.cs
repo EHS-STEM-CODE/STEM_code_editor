@@ -30,15 +30,11 @@ namespace TextEditor_0._01
             fileEditors = new ArrayList();
             tabControl = new TabControl();
             tabControl.Name = "tabControl";
-
             tabControl.Selected += TabControl_Selected;
-      
-
-            //!! dock control fill loses the top of the tabs under the menu.
-            tabControl.Location = new Point(0, 25);
-            tabControl.Size = new Size(768, 765);
-            tabControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Left;
+            menuStrip1.Dock = DockStyle.Top;
+            tabControl.Dock = DockStyle.Fill;
             Controls.Add(tabControl);
+            Controls.Add(menuStrip1);
             OnNewFile();
         }
 
