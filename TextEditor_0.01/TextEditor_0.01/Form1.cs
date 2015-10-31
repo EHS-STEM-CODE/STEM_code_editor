@@ -34,7 +34,7 @@ namespace TextEditor_0._01
             menuStrip1.Dock = DockStyle.Top;
             tabControl.Dock = DockStyle.Fill;
             Controls.Add(tabControl);
-            Controls.Add(menuStrip1);
+            Controls.Add(menuStrip1);       //Fixed the problem <- Can this line be avoided
             OnNewFile();
         }
 
