@@ -27,6 +27,18 @@ public class FileEditor
         initializeScintilla();
     }
 
+    public FileEditor(TabControl tabControl, string path, string shortName, string text)
+    {
+        isDirty = false;
+        isNew = false;
+        this.tabControl = tabControl;
+        this.path = path;
+        this.shortName = shortName;
+        sci = new Scintilla();
+        sci.Text = text;
+        initializeScintilla();
+    }
+
     private void initializeScintilla()
     {
         sci.Margins[0].Width = 32;
@@ -76,7 +88,6 @@ public class FileEditor
                                         Math NaN name Number Object prototype String toString undefined valueOf");
 
         sci.TextChanged += TextWasChanged;
-        
     }
 
     public Scintilla getScintilla()
@@ -130,11 +141,6 @@ public class FileEditor
     public String GetText()
     {
         return (sci.GetTextRange(0, sci.TextLength));
-    }
-
-    public void SetText(String moreText)
-    {
-        sci.Text = moreText;
     }
 
     public void TextWasChanged(object sender, EventArgs e)

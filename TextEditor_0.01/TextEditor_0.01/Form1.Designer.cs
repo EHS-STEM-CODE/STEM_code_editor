@@ -118,7 +118,6 @@
             this.clearAllToolStripMenuItem.Name = "clearAllToolStripMenuItem";
             this.clearAllToolStripMenuItem.Size = new System.Drawing.Size(156, 30);
             this.clearAllToolStripMenuItem.Text = "ClearAll";
-            this.clearAllToolStripMenuItem.Click += new System.EventHandler(this.clearAllToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 

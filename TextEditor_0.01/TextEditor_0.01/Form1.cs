@@ -54,11 +54,6 @@ namespace TextEditor_0._01
             OnOpenFile();
         }
 
-        private void clearAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            currentFileEditor.SetText("");
-        }
-
         private void newTabToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //adding a new tab means adding a new (empty) file to edit or opening another file.
@@ -96,12 +91,12 @@ namespace TextEditor_0._01
         private void OnNewFile()
         {
             currentFileEditor = new FileEditor(tabControl);
-            fileEditors.Add(currentFileEditor);         //Add it to the arrayList
-            TabPage newTab = new TabPage(currentFileEditor.ShortName()); //Create a new tab
-            tabControl.TabPages.Add(newTab);                            //Add the new tab to the tabController
+            fileEditors.Add(currentFileEditor);
+            TabPage newTab = new TabPage(currentFileEditor.ShortName());
+            tabControl.TabPages.Add(newTab);
 
-            newTab.Controls.Add(currentFileEditor.getScintilla()); //Add the new text box to the tab 
-            tabControl.SelectTab(fileEditors.Count - 1);    //Select the tab that was just created
+            newTab.Controls.Add(currentFileEditor.getScintilla());
+            tabControl.SelectTab(fileEditors.Count - 1);
         }
 
         private void OnOpenFile()
@@ -109,17 +104,14 @@ namespace TextEditor_0._01
             if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 System.IO.StreamReader openFile = new System.IO.StreamReader(openFileDialog1.FileName);
+                FileEditor newFileEditor = new FileEditor(tabControl, openFileDialog1.FileName, openFileDialog1.SafeFileName, openFile.ReadToEnd());
+                TabPage newTab = new TabPage(openFileDialog1.SafeFileName);
+                tabControl.TabPages.Add(newTab);
 
-                currentFileEditor = new FileEditor(tabControl);       //Create a new file editor
-                fileEditors.Add(currentFileEditor);         //Add it to the arrayList
-                TabPage newTab = new TabPage(openFileDialog1.FileName); //Create a new tab
-                tabControl.TabPages.Add(newTab);            //Add the new tab to the tabController
-                
-                newTab.Controls.Add(currentFileEditor.getScintilla()); //Add the new text box to the tab    
+                fileEditors.Add(newFileEditor);
+                newTab.Controls.Add(currentFileEditor.getScintilla()); 
                 tabControl.SelectTab(fileEditors.Count-1);        
 
-                currentFileEditor.SetPath(openFileDialog1.FileName);
-                currentFileEditor.SetText(openFile.ReadToEnd());
                 openFile.Close();
             }
         }
@@ -170,14 +162,6 @@ namespace TextEditor_0._01
                 currentFileEditor.SetNew(false);
             }
         }
-
-        //maybe a better way to update the display
-        //!! NEEDED?
-        private void UpdateDisplay()
-        {
-            tabControl.SelectedTab.Text = currentFileEditor.TabLabel();
-        }
-
 
         //!! you many want to just remove these
         // should not have a flicker problem.
