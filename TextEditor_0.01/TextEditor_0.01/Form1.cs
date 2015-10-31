@@ -31,7 +31,7 @@ namespace TextEditor_0._01
             tabControl = new TabControl();
             tabControl.Name = "tabControl";
 
-            tabControl.Selected += TabControl_Selected;     //TabControl_Selected callled on tab click
+            tabControl.Selected += TabControl_Selected;
       
 
             //!! dock control fill loses the top of the tabs under the menu.
@@ -95,7 +95,7 @@ namespace TextEditor_0._01
 
         private void OnNewFile()
         {
-            currentFileEditor = new FileEditor();       //Create a new file editor
+            currentFileEditor = new FileEditor(tabControl);
             fileEditors.Add(currentFileEditor);         //Add it to the arrayList
             TabPage newTab = new TabPage(currentFileEditor.ShortName()); //Create a new tab
             tabControl.TabPages.Add(newTab);                            //Add the new tab to the tabController
@@ -110,7 +110,7 @@ namespace TextEditor_0._01
             {
                 System.IO.StreamReader openFile = new System.IO.StreamReader(openFileDialog1.FileName);
 
-                currentFileEditor = new FileEditor();       //Create a new file editor
+                currentFileEditor = new FileEditor(tabControl);       //Create a new file editor
                 fileEditors.Add(currentFileEditor);         //Add it to the arrayList
                 TabPage newTab = new TabPage(openFileDialog1.FileName); //Create a new tab
                 tabControl.TabPages.Add(newTab);            //Add the new tab to the tabController
@@ -122,11 +122,6 @@ namespace TextEditor_0._01
                 currentFileEditor.SetText(openFile.ReadToEnd());
                 openFile.Close();
             }
-        }
-
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -165,6 +160,7 @@ namespace TextEditor_0._01
                 }
             }
         }
+
         private void saveAs()
         {
             if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)

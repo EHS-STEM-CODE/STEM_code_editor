@@ -14,13 +14,15 @@ public class FileEditor
     
     private bool isDirty;
     private bool isNew;
+    private TabControl tabControl;
 
-    public FileEditor()
+    public FileEditor(TabControl tabControl)
     {
         isDirty = false;
         isNew = true;
         path = "";
         shortName = "untitled";
+        this.tabControl = tabControl;
         sci = new Scintilla();
         initializeScintilla();
     }
@@ -138,6 +140,7 @@ public class FileEditor
     public void TextWasChanged(object sender, EventArgs e)
     {
         isDirty = true;
+        tabControl.SelectedTab.Text = TabLabel();
     }
 
 }
