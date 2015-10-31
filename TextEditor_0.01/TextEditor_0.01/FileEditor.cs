@@ -27,15 +27,15 @@ public class FileEditor
         initializeScintilla();
     }
 
-    public FileEditor(TabControl tabControl, string path, string shortName, string text)
+    public FileEditor(TabControl _tabControl, string _path, string _shortName, string _text)
     {
         isDirty = false;
         isNew = false;
-        this.tabControl = tabControl;
-        this.path = path;
-        this.shortName = shortName;
+        tabControl = _tabControl;
+        path = _path;
+        shortName = _shortName;
         sci = new Scintilla();
-        sci.Text = text;
+        sci.Text = _text;
         initializeScintilla();
     }
 
@@ -131,6 +131,11 @@ public class FileEditor
     public string Path()
     {
         return path;
+    }
+
+    public void SetShortName(string _shortName)
+    {
+        shortName = _shortName;
     }
 
     public string ShortName()

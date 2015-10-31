@@ -7,6 +7,7 @@ using System.Drawing;  //default, but not needed unless you are drawing
 using System.Linq;     //same
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
 using ScintillaNET;
 
 namespace TextEditor_0._01
@@ -80,6 +81,19 @@ namespace TextEditor_0._01
             saveAs();
         }
 
+        private void saveAs()
+        {
+            if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                save(saveFileDialog1.FileName);
+                currentFileEditor.SetPath(saveFileDialog1.FileName);
+                currentFileEditor.SetShortName(Path.GetFileName(saveFileDialog1.FileName));
+                currentFileEditor.SetNew(false);
+                tabControl.SelectedTab.Text = currentFileEditor.ShortName();
+            }
+        }
+
+
         private void fileToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             
@@ -126,37 +140,35 @@ namespace TextEditor_0._01
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            Console.WriteLine("The application is closing...");
-            DialogResult result = MessageBox.Show("Do you really want to quit? ", "Closing Application", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-            e.Cancel = !(result == DialogResult.Yes);
+            closeFile();
         }
 
         private void closeFile()
         {
-            foreach (FileEditor fileEditor in fileEditors)
+            for (int i = 0; i < fileEditors.Count; i++ )
             {
-                if (fileEditor.IsDirty())
+                currentFileEditor = (FileEditor)fileEditors[i];
+                tabControl.SelectTab(i);
+                if (currentFileEditor.IsDirty())
                 {
-                    DialogResult result = MessageBox.Show("Do you want to save \"" + fileEditor.ShortName() + "\"", "Important Query", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                    if (result == DialogResult.Yes)
+                    //need to abort closing when the user clicks cancel
+                    if (currentFileEditor.IsNew())
                     {
-                        saveAs();
+                        DialogResult result = MessageBox.Show("Do you want to save this file?", "Saving untitled file", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                        if (result == DialogResult.Yes)
+                            saveAs();
+                        else if (result == DialogResult.No)
+                            Console.Write("Close the file and dump out of text editor"); // -> remove this from tabControl and fileEditors
                     }
-                    else if (result == DialogResult.No)
+                    else // file is not new but dirty
                     {
-                        System.Environment.Exit(-1);
+                        DialogResult result = MessageBox.Show("Do you want to save " + currentFileEditor.ShortName() + "?", "Saving file", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                        if (result == DialogResult.Yes)
+                            save(currentFileEditor.Path());
+                        else if (result == DialogResult.No)
+                            Console.Write("close the tab, remove"); // remove from tabControl and fileEditors
                     }
                 }
-            }
-        }
-
-        private void saveAs()
-        {
-            if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                save(saveFileDialog1.FileName);
-                currentFileEditor.SetPath(saveFileDialog1.FileName);
-                currentFileEditor.SetNew(false);
             }
         }
 
