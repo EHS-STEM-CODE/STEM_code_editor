@@ -51,14 +51,6 @@ namespace TextEditor_0._01
             OnOpenFile();
         }
 
-        private void newTabToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //adding a new tab means adding a new (empty) file to edit or opening another file.
-            //this implies that you need something that represents and open file that you're editing.
-            // --name, shortname, cursor position, dirty/clean, undo stack, etc.
-            //switching tabs means switching edit file contexts.
-        }
-
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if(!currentFileEditor.IsNew())
@@ -91,12 +83,6 @@ namespace TextEditor_0._01
                 currentFileEditor.SetNew(false);
                 tabControl.SelectedTab.Text = currentFileEditor.ShortName();
             }
-        }
-
-
-        private void fileToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            
         }
 
         private void OnNewFile()
@@ -172,6 +158,11 @@ namespace TextEditor_0._01
             }
         }
 
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OnNewFile();
+        }
+
         //!! you many want to just remove these
         // should not have a flicker problem.
         //protected override void OnResizeBegin(EventArgs e)      //Next two methods prevent flickering while resizing the window
@@ -184,11 +175,6 @@ namespace TextEditor_0._01
         //    ResumeLayout();
         //    base.OnResizeEnd(e);
         //}
-
-        private void tabToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OnNewFile();
-        }
     }
     
 }
