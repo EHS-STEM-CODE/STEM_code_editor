@@ -88,6 +88,36 @@ public class FileEditor
                                         Math NaN name Number Object prototype String toString undefined valueOf");
 
         sci.TextChanged += TextWasChanged;
+
+
+
+        sci.SetProperty("fold", "1");
+        sci.SetProperty("fold.compact", "1");
+
+        // Configure a margin to display folding symbols
+        sci.Margins[2].Type = MarginType.Symbol;
+        sci.Margins[2].Mask = Marker.MaskFolders;
+        sci.Margins[2].Sensitive = true;
+        sci.Margins[2].Width = 20;
+
+        // Set colors for all folding markers
+        for (int i = 25; i <= 31; i++)
+        {
+            sci.Markers[i].SetForeColor(SystemColors.ControlLightLight);
+            sci.Markers[i].SetBackColor(SystemColors.ControlDark);
+        }
+
+        // Configure folding markers with respective symbols
+        sci.Markers[Marker.Folder].Symbol = MarkerSymbol.BoxPlus;
+        sci.Markers[Marker.FolderOpen].Symbol = MarkerSymbol.BoxMinus;
+        sci.Markers[Marker.FolderEnd].Symbol = MarkerSymbol.BoxPlusConnected;
+        sci.Markers[Marker.FolderMidTail].Symbol = MarkerSymbol.TCorner;
+        sci.Markers[Marker.FolderOpenMid].Symbol = MarkerSymbol.BoxMinusConnected;
+        sci.Markers[Marker.FolderSub].Symbol = MarkerSymbol.VLine;
+        sci.Markers[Marker.FolderTail].Symbol = MarkerSymbol.LCorner;
+
+        // Enable automatic folding
+        sci.AutomaticFold = (AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.Change);
     }
 
     public Scintilla getScintilla()
