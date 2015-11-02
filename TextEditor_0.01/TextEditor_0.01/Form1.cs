@@ -73,16 +73,20 @@ namespace TextEditor_0._01
             saveAs();
         }
 
-        private void saveAs()
+        private bool saveAs()
         {
-            if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            bool success = false;
+            System.Windows.Forms.DialogResult result = saveFileDialog1.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
             {
                 save(saveFileDialog1.FileName);
                 currentFileEditor.SetPath(saveFileDialog1.FileName);
                 currentFileEditor.SetShortName(Path.GetFileName(saveFileDialog1.FileName));
                 currentFileEditor.SetNew(false);
                 tabControl.SelectedTab.Text = currentFileEditor.ShortName();
+                success = true;
             }
+            return success;
         }
 
         private void OnNewFile()
@@ -126,11 +130,12 @@ namespace TextEditor_0._01
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            closeFile();
+            e.Cancel = !closeFile(); //don't close if the closing of files failed.
         }
 
-        private void closeFile()
+        private bool closeFile()
         {
+            bool success = true;
             for (int i = 0; i < fileEditors.Count; i++ )
             {
                 currentFileEditor = (FileEditor)fileEditors[i];
@@ -142,9 +147,13 @@ namespace TextEditor_0._01
                     {
                         DialogResult result = MessageBox.Show("Do you want to save this file?", "Saving untitled file", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                         if (result == DialogResult.Yes)
-                            saveAs();
+                        {
+                            success = saveAs();
+                        }
                         else if (result == DialogResult.No)
                             Console.Write("Close the file and dump out of text editor"); // -> remove this from tabControl and fileEditors
+                        else if (result == DialogResult.Cancel)
+                            success = false;
                     }
                     else // file is not new but dirty
                     {
@@ -153,9 +162,12 @@ namespace TextEditor_0._01
                             save(currentFileEditor.Path());
                         else if (result == DialogResult.No)
                             Console.Write("close the tab, remove"); // remove from tabControl and fileEditors
+                        else if (result == DialogResult.Cancel)
+                            success = false;
                     }
                 }
             }
+            return success;
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
