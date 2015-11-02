@@ -43,8 +43,7 @@ public class FileEditor
     {
         sci.Margins[0].Width = 32;
         sci.Lexer = Lexer.Cpp;
-        sci.Size = new Size(700, 700);  //How do I set it to make it lock to the screen size?
-        sci.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Left;
+        sci.Dock = DockStyle.Fill;
         Console.WriteLine(sci.DescribeKeywordSets());
 
         sci.Styles[Style.Default].Font = "Consolas";
@@ -124,10 +123,8 @@ public class FileEditor
         sci.AssignCmdKey(Keys.Control | Keys.K, Command.LineCopy);
         sci.AssignCmdKey(Keys.Control | Keys.A, Command.Home);
         sci.AssignCmdKey(Keys.Control | Keys.E, Command.LineEnd);
-        
 
-        // sci.Scrolling.ScrollBy(0, Scintilla1.Lines.Count)
-
+        sci.HScrollBar = false;
 
         // Enable automatic folding
         sci.AutomaticFold = (AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.Change);
