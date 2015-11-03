@@ -133,6 +133,8 @@ namespace TextEditor_0._01
             e.Cancel = !closeFile(); //don't close if the closing of files failed.
         }
 
+        //!!this is really appQuit().
+        //!!we need a separate CloseFile() that just closes the current tab (check to save if dirty).
         private bool closeFile()
         {
             bool success = true;
