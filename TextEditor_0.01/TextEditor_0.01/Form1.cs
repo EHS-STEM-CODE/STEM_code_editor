@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;  //default, but not needed unless you are drawing
-using System.Linq;     //same
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
@@ -34,17 +32,16 @@ namespace TextEditor_0._01
             tabControl.Selected += TabControl_Selected;
             menuStrip1.Dock = DockStyle.Top;
             tabControl.Dock = DockStyle.Fill;
-            Controls.Add(tabControl);
-            Controls.Add(menuStrip1);       //Fixed the problem <- Can this line be avoided
+            splitContainer1.Panel1.Controls.Add(tabControl);
+            splitContainer1.Panel1.Controls.Add(menuStrip1);       //Fixed the problem <- Can this line be avoided
             OnNewFile();
+            
         }
 
         private void TabControl_Selected(object sender, TabControlEventArgs e)
         {
             currentFileEditor = (FileEditor)fileEditors[tabControl.SelectedIndex];
         }
-
-
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -177,18 +174,21 @@ namespace TextEditor_0._01
             OnNewFile();
         }
 
-        //!! you many want to just remove these
-        // should not have a flicker problem.
-        //protected override void OnResizeBegin(EventArgs e)      //Next two methods prevent flickering while resizing the window
-        //{
-        //    SuspendLayout();
-        //    base.OnResizeBegin(e);
-        //}
-        //protected override void OnResizeEnd(EventArgs e)
-        //{
-        //    ResumeLayout();
-        //    base.OnResizeEnd(e);
-        //}
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("Compile button pressed");
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("Upload button pressed");
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("Refresh button pressed");
+        }
+
     }
     
 }
