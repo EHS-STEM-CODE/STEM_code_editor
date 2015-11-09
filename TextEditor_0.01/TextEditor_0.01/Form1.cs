@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
@@ -15,6 +16,9 @@ namespace TextEditor_0._01
         private FileEditor currentFileEditor;
         private ArrayList fileEditors;
         private TabControl tabControl;
+
+        private ContextMenu mnu;
+        MenuItem mnuClose;
 
         public MainForm()
         {
@@ -30,12 +34,18 @@ namespace TextEditor_0._01
             tabControl = new TabControl();
             tabControl.Name = "tabControl";
             tabControl.Selected += TabControl_Selected;
+            tabControl.MouseUp += tabControl_MouseUp;
             menuStrip1.Dock = DockStyle.Top;
             tabControl.Dock = DockStyle.Fill;
             splitContainer1.Panel1.Controls.Add(tabControl);
             splitContainer1.Panel1.Controls.Add(menuStrip1);       //Fixed the problem <- Can this line be avoided
+
+            mnu = new ContextMenu();
+            mnuClose = new MenuItem("Close");   
+            mnuClose.Click += new EventHandler(mnuClose_Click);
+            mnu.MenuItems.AddRange(new MenuItem[] { mnuClose });
+
             OnNewFile();
-            
         }
 
         private void TabControl_Selected(object sender, TabControlEventArgs e)
@@ -189,6 +199,68 @@ namespace TextEditor_0._01
             Console.WriteLine("Refresh button pressed");
         }
 
+        private void tabControl_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                for (int i = 0; i < tabControl.TabCount; i++)
+                {
+                    Rectangle r = tabControl.GetTabRect(i);
+                    if (r.Contains(e.Location))
+                    {
+                        currentFileEditor = (FileEditor)fileEditors[i];
+                        tabControl.SelectTab(i);
+                        mnu.Show(tabControl, e.Location);
+                    }
+                }
+            }
+        }
+
+        private void mnuClose_Click(object sender, EventArgs e)
+        {
+            closeTab();
+        }
+
+        private void closeTab()
+        {
+            bool success = true;
+            int currentTabIndex = tabControl.SelectedIndex;
+            currentFileEditor = (FileEditor)fileEditors[currentTabIndex];
+            if (currentFileEditor.IsDirty())
+            {
+                if (currentFileEditor.IsNew())
+                {
+                    DialogResult result = MessageBox.Show("Do you want to save " + currentFileEditor.ShortName() + "?", "Saving file", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
+                        success = saveAs();
+                    else if (result == DialogResult.Cancel)
+                        success = false;
+                }
+                else
+                {
+                    DialogResult result = MessageBox.Show("Do you want to save " + currentFileEditor.ShortName() + "?", "Saving file", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
+                        save(currentFileEditor.Path());
+                    else if (result == DialogResult.Cancel)
+                        success = false;
+                }
+            }
+            if (success)
+            {
+                if (tabControl.TabCount == 1)
+                    System.Environment.Exit(0);
+                else
+                {
+                    fileEditors.RemoveAt(currentTabIndex);
+                    tabControl.SelectedTab.Dispose();
+                    if (currentTabIndex == tabControl.TabCount)
+                    {
+                        tabControl.SelectTab(currentTabIndex - 1);
+                    }
+                    else
+                        tabControl.SelectTab(currentTabIndex);
+                }
+            }
+        }
     }
-    
 }
