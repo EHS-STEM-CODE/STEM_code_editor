@@ -115,15 +115,6 @@ public class FileEditor
         sci.Markers[Marker.FolderSub].Symbol = MarkerSymbol.VLine;
         sci.Markers[Marker.FolderTail].Symbol = MarkerSymbol.LCorner;
 
-
-        sci.AssignCmdKey(Keys.Control | Keys.N, Command.LineDown);
-        sci.AssignCmdKey(Keys.Control | Keys.P, Command.LineUp);
-        sci.AssignCmdKey(Keys.Control | Keys.B, Command.CharLeft);
-        sci.AssignCmdKey(Keys.Control | Keys.F, Command.CharRight);
-        sci.AssignCmdKey(Keys.Control | Keys.K, Command.LineCopy);
-        sci.AssignCmdKey(Keys.Control | Keys.A, Command.Home);
-        sci.AssignCmdKey(Keys.Control | Keys.E, Command.LineEnd);
-
         sci.HScrollBar = false;
 
         // Enable automatic folding

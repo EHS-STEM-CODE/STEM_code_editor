@@ -152,7 +152,8 @@ namespace TextEditor_0._01
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            e.Cancel = !CloseFile(); //don't close if the closing of files failed.
+            e.Cancel = !CloseFile();
+
         }
 
         private bool CloseFile()
