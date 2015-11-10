@@ -60,8 +60,13 @@ namespace TextEditor_0._01
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(!currentFileEditor.IsNew())
-                save(currentFileEditor.Path());
+            if (currentFileEditor.IsDirty())
+            {
+                if (currentFileEditor.IsNew())
+                    saveAs();
+                else
+                    save(currentFileEditor.Path());
+            }
         }
 
         private void save(String path)
@@ -113,70 +118,75 @@ namespace TextEditor_0._01
             {
                 System.IO.StreamReader openFile = new System.IO.StreamReader(openFileDialog1.FileName);
                 FileEditor newFileEditor = new FileEditor(tabControl, openFileDialog1.FileName, openFileDialog1.SafeFileName, openFile.ReadToEnd());
-                TabPage newTab = new TabPage(openFileDialog1.SafeFileName);
-                tabControl.TabPages.Add(newTab);
-                currentFileEditor = newFileEditor;
-                fileEditors.Add(newFileEditor);
-                newTab.Controls.Add(currentFileEditor.getScintilla()); 
-                tabControl.SelectTab(fileEditors.Count-1);        
-
+                if (currentFileEditor.IsNew() && (!currentFileEditor.IsDirty()))
+                {
+                    int currentTabIndex = tabControl.SelectedIndex;
+                    currentFileEditor = newFileEditor;
+                    fileEditors[currentTabIndex] = newFileEditor;
+                    tabControl.SelectedTab.Text = openFileDialog1.SafeFileName;
+                    tabControl.SelectedTab.Controls.Clear();
+                    tabControl.SelectedTab.Controls.Add(currentFileEditor.getScintilla());
+                }
+                else
+                {
+                    TabPage newTab = new TabPage(openFileDialog1.SafeFileName);
+                    tabControl.TabPages.Add(newTab);
+                    currentFileEditor = newFileEditor;
+                    fileEditors.Add(newFileEditor);
+                    newTab.Controls.Add(currentFileEditor.getScintilla());
+                    tabControl.SelectTab(fileEditors.Count - 1);
+                }
                 openFile.Close();
             }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            closeFile();
+            CloseFile();
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //closeFile();
-            Close();
+            closeTab();
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            e.Cancel = !closeFile(); //don't close if the closing of files failed.
+            e.Cancel = !CloseFile(); //don't close if the closing of files failed.
         }
 
-        //!!this is really appQuit().
-        //!!we need a separate CloseFile() that just closes the current tab (check to save if dirty).
-        private bool closeFile()
+        private bool CloseFile()
         {
-            bool success = true;
-            for (int i = 0; i < fileEditors.Count; i++ )
+            int i = 0;
+            while (i < tabControl.TabCount)
             {
                 currentFileEditor = (FileEditor)fileEditors[i];
                 tabControl.SelectTab(i);
                 if (currentFileEditor.IsDirty())
                 {
-                    //need to abort closing when the user clicks cancel
                     if (currentFileEditor.IsNew())
                     {
-                        DialogResult result = MessageBox.Show("Do you want to save this file?", "Saving untitled file", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                        DialogResult result = MessageBox.Show("Do you want to save this file?", "Saving new file", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                         if (result == DialogResult.Yes)
                         {
-                            success = saveAs();
+                            if (saveAs() == false)
+                                return false;
                         }
-                        else if (result == DialogResult.No)
-                            Console.Write("Close the file and dump out of text editor"); // -> remove this from tabControl and fileEditors
                         else if (result == DialogResult.Cancel)
-                            success = false;
+                            return false;
                     }
-                    else // file is not new but dirty
+                    else
                     {
                         DialogResult result = MessageBox.Show("Do you want to save " + currentFileEditor.ShortName() + "?", "Saving file", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                         if (result == DialogResult.Yes)
                             save(currentFileEditor.Path());
-                        else if (result == DialogResult.No)
-                            Console.Write("close the tab, remove"); // remove from tabControl and fileEditors
                         else if (result == DialogResult.Cancel)
-                            success = false;
+                            return false;
                     }
                 }
+                i++;
             }
-            return success;
+            return true;
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
