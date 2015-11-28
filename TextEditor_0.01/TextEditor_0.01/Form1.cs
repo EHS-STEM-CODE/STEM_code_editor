@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using ScintillaNET;
+using Jint;
 
 namespace TextEditor_0._01
 {
@@ -197,7 +198,15 @@ namespace TextEditor_0._01
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Compile button pressed");
+			if (currentFileEditor.IsDirty ()) {
+				if (currentFileEditor.IsNew ())
+					saveAs ();
+				else
+					save (currentFileEditor.Path ());
+			}
+		
+			var engine = new Engine ().SetValue ("log", new Action<object> (Console.WriteLine));
+			engine.Execute (currentFileEditor.GetText ());
         }
 
         private void button2_Click(object sender, EventArgs e)
