@@ -18,6 +18,7 @@ namespace TextEditor_0._01
         private ArrayList fileEditors;
         private TabControl tabControl;
 
+
         private ContextMenu mnu;
         MenuItem mnuClose;
 
@@ -40,6 +41,9 @@ namespace TextEditor_0._01
             tabControl.Dock = DockStyle.Fill;
             splitContainer1.Panel1.Controls.Add(tabControl);
             splitContainer1.Panel1.Controls.Add(menuStrip1);       //Fixed the problem <- Can this line be avoided
+            splitContainer2.Panel1.Controls.Add(tabControl);
+            splitContainer2.Panel1.Controls.Add(menuStrip1);
+
 
             mnu = new ContextMenu();
             mnuClose = new MenuItem("Close");   
@@ -111,6 +115,7 @@ namespace TextEditor_0._01
 
             newTab.Controls.Add(currentFileEditor.getScintilla());
             tabControl.SelectTab(fileEditors.Count - 1);
+           
         }
 
         private void OnOpenFile()
@@ -204,9 +209,15 @@ namespace TextEditor_0._01
 				else
 					save (currentFileEditor.Path ());
 			}
-		
-			var engine = new Engine ().SetValue ("log", new Action<object> (Console.WriteLine));
+
+            var engine = new Engine().SetValue("log", new Action<object>(printOutput));
 			engine.Execute (currentFileEditor.GetText ());
+        }
+        private void printOutput(Object s)
+        {
+            if (s == null)
+                s = "null";
+            textBox1.AppendText(s.ToString() + "\n");
         }
 
         private void button2_Click(object sender, EventArgs e)
