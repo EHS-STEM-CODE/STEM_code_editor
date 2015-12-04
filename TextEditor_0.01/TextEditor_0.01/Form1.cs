@@ -211,7 +211,14 @@ namespace TextEditor_0._01
 			}
 
             var engine = new Engine().SetValue("log", new Action<object>(printOutput));
-			engine.Execute (currentFileEditor.GetText ());
+            try
+            {
+                engine.Execute(currentFileEditor.GetText());
+            }
+            catch( Jint.Runtime.JavaScriptException ex )
+            {
+                printOutput("oops: an exception: " + ex.Message);
+            }
         }
         private void printOutput(Object s)
         {
