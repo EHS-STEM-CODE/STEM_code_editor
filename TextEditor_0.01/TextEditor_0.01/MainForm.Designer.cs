@@ -38,11 +38,12 @@
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.connectButton = new System.Windows.Forms.Button();
+            this.stopButton = new System.Windows.Forms.Button();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.statusBox = new System.Windows.Forms.RichTextBox();
+            this.outputBox = new System.Windows.Forms.RichTextBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -51,6 +52,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
+            this.splitContainer3.Panel1.SuspendLayout();
+            this.splitContainer3.Panel2.SuspendLayout();
+            this.splitContainer3.SuspendLayout();
             this.SuspendLayout();
             // 
             // openFileDialog1
@@ -73,7 +78,7 @@
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(208, 30);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(211, 30);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
@@ -81,7 +86,7 @@
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(208, 30);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(211, 30);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -89,14 +94,14 @@
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(208, 30);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(211, 30);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(208, 30);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(211, 30);
             this.saveAsToolStripMenuItem.Text = "Save as";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
@@ -104,7 +109,7 @@
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
             this.closeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(208, 30);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(211, 30);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
@@ -133,43 +138,12 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.button3);
-            this.splitContainer1.Panel2.Controls.Add(this.button2);
-            this.splitContainer1.Panel2.Controls.Add(this.button1);
+            this.splitContainer1.Panel2.Controls.Add(this.stopButton);
+            this.splitContainer1.Panel2.Controls.Add(this.connectButton);
             this.splitContainer1.Size = new System.Drawing.Size(957, 610);
             this.splitContainer1.SplitterDistance = 552;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 1;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(322, 14);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(148, 45);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "Refresh";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(166, 14);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(148, 45);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Upload";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(12, 14);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(148, 45);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Compile";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // splitContainer2
             // 
@@ -180,19 +154,68 @@
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.textBox1);
+            this.splitContainer2.Panel2.Controls.Add(this.splitContainer3);
             this.splitContainer2.Size = new System.Drawing.Size(957, 552);
             this.splitContainer2.SplitterDistance = 319;
             this.splitContainer2.TabIndex = 0;
             // 
-            // textBox1
+            // connectButton
             // 
-            this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox1.Location = new System.Drawing.Point(0, 0);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(957, 229);
-            this.textBox1.TabIndex = 0;
+            this.connectButton.Location = new System.Drawing.Point(3, 4);
+            this.connectButton.Name = "connectButton";
+            this.connectButton.Size = new System.Drawing.Size(95, 46);
+            this.connectButton.TabIndex = 0;
+            this.connectButton.Text = "Connect";
+            this.connectButton.UseVisualStyleBackColor = true;
+            // 
+            // stopButton
+            // 
+            this.stopButton.Location = new System.Drawing.Point(102, 4);
+            this.stopButton.Name = "stopButton";
+            this.stopButton.Size = new System.Drawing.Size(95, 46);
+            this.stopButton.TabIndex = 1;
+            this.stopButton.Text = "Stop";
+            this.stopButton.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer3
+            // 
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer3.Name = "splitContainer3";
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.outputBox);
+            this.splitContainer3.Panel1MinSize = 300;
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.statusBox);
+            this.splitContainer3.Panel2MinSize = 150;
+            this.splitContainer3.Size = new System.Drawing.Size(957, 229);
+            this.splitContainer3.SplitterDistance = 662;
+            this.splitContainer3.TabIndex = 0;
+            // 
+            // statusBox
+            // 
+            this.statusBox.DetectUrls = false;
+            this.statusBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.statusBox.Location = new System.Drawing.Point(0, 0);
+            this.statusBox.Name = "statusBox";
+            this.statusBox.ReadOnly = true;
+            this.statusBox.Size = new System.Drawing.Size(291, 229);
+            this.statusBox.TabIndex = 0;
+            this.statusBox.Text = "";
+            // 
+            // outputBox
+            // 
+            this.outputBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.outputBox.Location = new System.Drawing.Point(0, 0);
+            this.outputBox.Name = "outputBox";
+            this.outputBox.ReadOnly = true;
+            this.outputBox.Size = new System.Drawing.Size(662, 229);
+            this.outputBox.TabIndex = 0;
+            this.outputBox.Text = "";
             // 
             // MainForm
             // 
@@ -212,9 +235,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
-            this.splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
+            this.splitContainer3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -231,11 +257,12 @@
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button stopButton;
+        private System.Windows.Forms.Button connectButton;
+        private System.Windows.Forms.SplitContainer splitContainer3;
+        private System.Windows.Forms.RichTextBox outputBox;
+        private System.Windows.Forms.RichTextBox statusBox;
     }
 }
 
