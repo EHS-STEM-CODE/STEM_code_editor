@@ -9,14 +9,30 @@ using System.Windows.Forms;
 
 namespace jintServer
 {
-    public partial class Form1 : Form
+	public interface TwoWayMessageDisplay{
+		void displayIncomingText (string msg);
+		void displayStatusText(string msg);
+	}
+
+    public partial class Form1 : Form, TwoWayMessageDisplay
     {
+		private Server server = null;
+
         public Form1()
         {
             InitializeComponent();
-            outputBox.Text = "Hello Derek! \r this text box is called outputBox";
-            codeBox.Text = "Here are your two textboxes \r this text box is called codeBox";
+			string address = "127.0.0.1";
+			int port = 3002;
+			server = new Server (address, port, this);
+
         }
 
+		public void displayIncomingText(string msg){
+			codeBox.Text = msg;
+		}
+
+		public void displayStatusText(string msg){
+			outputBox.Text += msg;
+		}
     }
 }

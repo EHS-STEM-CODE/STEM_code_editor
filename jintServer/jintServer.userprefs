@@ -1,0 +1,14 @@
+﻿<Properties StartupItem="jintServer\jintServer.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="jintServer\Server.cs">
+    <Files>
+      <File FileName="jintServer\Form1.cs" Line="26" Column="41" />
+      <File FileName="jintServer\Server.cs" Line="15" Column="39" />
+      <File FileName="jintServer\Form1.Designer.cs" Line="63" Column="57" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
