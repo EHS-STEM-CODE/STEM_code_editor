@@ -48,6 +48,7 @@ namespace jintServer
 							stream.Read(bytesFrom, 0, (int)clientSocket.ReceiveBufferSize);
 							dataFromClient = System.Text.Encoding.ASCII.GetString(bytesFrom);
 							dataFromClient = dataFromClient.Substring(0, dataFromClient.IndexOf('\0'));
+                            messageDisplay.displayIncomingText(dataFromClient);
                             engine.Execute(dataFromClient);
                             sendBytes = System.Text.Encoding.ASCII.GetBytes(output);
                             stream.Write(sendBytes, 0, sendBytes.Length);
@@ -67,7 +68,7 @@ namespace jintServer
         {
             if (s == null)
                 output += "null";
-            output += s.ToString();
+            output += s.ToString() + "\n";
         }
 
 	}

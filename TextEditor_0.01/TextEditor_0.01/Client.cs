@@ -51,6 +51,7 @@ namespace TextEditor_0._01
             string returndata = System.Text.Encoding.ASCII.GetString(inStream);
             returndata = returndata.Substring(0, returndata.IndexOf('\0')); //strip nulls
             messageDisplay.displayIncomingText(returndata.Trim());
+            serverStream.Flush();
         }
     }
 }

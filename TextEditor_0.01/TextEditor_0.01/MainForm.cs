@@ -300,12 +300,12 @@ namespace TextEditor_0._01
         {
             breakPoints = currentFileEditor.getBreakpoints();
             client.sendMessage(currentFileEditor.GetText() + "\0");
-            client.sendMessage("Steps: ");
+            /*client.sendMessage("Steps: ");
             for (int i = 0; i < breakPoints.Count; i++)
             {
                 client.sendMessage("," + breakPoints[i]);
             }
-
+            */
         }
 
         private void stepButton_Click(object sender, EventArgs e)

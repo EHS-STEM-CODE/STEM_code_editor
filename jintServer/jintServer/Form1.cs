@@ -34,5 +34,10 @@ namespace jintServer
 		public void displayStatusText(string msg){
 			outputBox.Text += msg;
 		}
+
+        private void outputBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

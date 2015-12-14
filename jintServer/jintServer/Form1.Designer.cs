@@ -52,7 +52,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.outputBox);
             this.splitContainer1.Size = new System.Drawing.Size(874, 680);
-            this.splitContainer1.SplitterDistance = 331;
+            this.splitContainer1.SplitterDistance = 330;
             this.splitContainer1.TabIndex = 0;
             // 
             // codeBox
@@ -60,7 +60,8 @@
             this.codeBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.codeBox.Location = new System.Drawing.Point(0, 0);
             this.codeBox.Name = "codeBox";
-            this.codeBox.Size = new System.Drawing.Size(874, 331);
+            this.codeBox.ReadOnly = true;
+            this.codeBox.Size = new System.Drawing.Size(874, 330);
             this.codeBox.TabIndex = 0;
             this.codeBox.Text = "";
             // 
@@ -69,9 +70,11 @@
             this.outputBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.outputBox.Location = new System.Drawing.Point(0, 0);
             this.outputBox.Name = "outputBox";
-            this.outputBox.Size = new System.Drawing.Size(874, 345);
+            this.outputBox.ReadOnly = true;
+            this.outputBox.Size = new System.Drawing.Size(874, 346);
             this.outputBox.TabIndex = 0;
             this.outputBox.Text = "";
+            this.outputBox.TextChanged += new System.EventHandler(this.outputBox_TextChanged);
             // 
             // Form1
             // 
