@@ -11,6 +11,7 @@ namespace jintServer
 		private static int port;
 		private static bool running;
 		TwoWayMessageDisplay messageDisplay;
+        private string output;
 
 		public Server (string anAddress, int aPort, TwoWayMessageDisplay display)
 		{
@@ -39,13 +40,19 @@ namespace jintServer
 					byte[] bytesFrom = new byte[10005];
 					string dataFromClient = null;
 					Byte[] sendBytes = null;
-
+                    var engine = new Engine().SetValue("log", new Action<object>(getString));
 					while (running) {
 						try{
+                            output = "";
 							NetworkStream stream = clientSocket.GetStream();
 							stream.Read(bytesFrom, 0, (int)clientSocket.ReceiveBufferSize);
 							dataFromClient = System.Text.Encoding.ASCII.GetString(bytesFrom);
 							dataFromClient = dataFromClient.Substring(0, dataFromClient.IndexOf('\0'));
+                            engine.Execute(dataFromClient);
+                            sendBytes = System.Text.Encoding.ASCII.GetBytes(output);
+                            stream.Write(sendBytes, 0, sendBytes.Length);
+                            stream.Flush();
+                            messageDisplay.displayStatusText(output);
 						}catch(Exception e){
 							Console.WriteLine (" >> " + e.ToString ());
 							running = false;
@@ -55,6 +62,14 @@ namespace jintServer
 				}
 			}
 		}
+
+        private void getString(object s)
+        {
+            if (s == null)
+                output += "null";
+            output += s.ToString();
+        }
+
 	}
 }
 

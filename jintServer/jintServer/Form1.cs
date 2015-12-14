@@ -24,7 +24,7 @@ namespace jintServer
 			string address = "127.0.0.1";
 			int port = 3002;
 			server = new Server (address, port, this);
-
+            server.listen();
         }
 
 		public void displayIncomingText(string msg){
