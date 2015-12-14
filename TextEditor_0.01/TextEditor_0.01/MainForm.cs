@@ -12,15 +12,27 @@ using Jint;
 
 namespace TextEditor_0._01
 {
-    public partial class MainForm : Form
+
+
+    public interface ClientMessageDisplay
+    {
+        void displayIncomingText(string msg);
+        void displayStatusText(string msg);
+        void displayStatusText(string msg, string type);
+    }
+
+
+    public partial class MainForm : Form, ClientMessageDisplay
     {
         private FileEditor currentFileEditor;
         private ArrayList fileEditors;
         private TabControl tabControl;
-
-
         private ContextMenu mnu;
         MenuItem mnuClose;
+        private static string address = "127.0.0.1";
+        private static int port;
+        private Client client;
+        private ArrayList breakPoints;
 
         public MainForm()
         {
@@ -44,13 +56,30 @@ namespace TextEditor_0._01
             splitContainer2.Panel1.Controls.Add(tabControl);
             splitContainer2.Panel1.Controls.Add(menuStrip1);
 
-
             mnu = new ContextMenu();
             mnuClose = new MenuItem("Close");   
             mnuClose.Click += new EventHandler(mnuClose_Click);
             mnu.MenuItems.AddRange(new MenuItem[] { mnuClose });
 
+            uploadButton.Enabled = false;
+            stepButton.Enabled = false;
+            breakPoints = new ArrayList();
+
             OnNewFile();
+        }
+
+        private void OnNewFile()
+        {
+            currentFileEditor = new FileEditor(tabControl);
+            fileEditors.Add(currentFileEditor);
+            TabPage newTab = new TabPage(currentFileEditor.ShortName());
+            tabControl.TabPages.Add(newTab);
+
+            newTab.Controls.Add(currentFileEditor.getScintilla());
+            tabControl.SelectTab(fileEditors.Count - 1);
+
+            port = 3002;
+            Client client = new Client(address, port, this);
         }
 
         private void TabControl_Selected(object sender, TabControlEventArgs e)
@@ -104,18 +133,6 @@ namespace TextEditor_0._01
                 success = true;
             }
             return success;
-        }
-
-        private void OnNewFile()
-        {
-            currentFileEditor = new FileEditor(tabControl);
-            fileEditors.Add(currentFileEditor);
-            TabPage newTab = new TabPage(currentFileEditor.ShortName());
-            tabControl.TabPages.Add(newTab);
-
-            newTab.Controls.Add(currentFileEditor.getScintilla());
-            tabControl.SelectTab(fileEditors.Count - 1);
-           
         }
 
         private void OnOpenFile()
@@ -201,42 +218,6 @@ namespace TextEditor_0._01
             OnNewFile();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-			if (currentFileEditor.IsDirty ()) {
-				if (currentFileEditor.IsNew ())
-					saveAs ();
-				else
-					save (currentFileEditor.Path ());
-			}
-
-            var engine = new Engine().SetValue("log", new Action<object>(printOutput));
-            try
-            {
-                engine.Execute(currentFileEditor.GetText());
-            }
-            catch( Jint.Runtime.JavaScriptException ex )
-            {
-                printOutput("oops: an exception: " + ex.Message);
-            }
-        }
-        private void printOutput(Object s)
-        {
-            if (s == null)
-                s = "null";
-            textBox1.AppendText(s.ToString() + "\n");
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Console.WriteLine("Upload button pressed");
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            Console.WriteLine("Refresh button pressed");
-        }
-
         private void tabControl_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -299,6 +280,70 @@ namespace TextEditor_0._01
                         tabControl.SelectTab(currentTabIndex);
                 }
             }
+        }
+
+        private void connectButton_Click(object sender, EventArgs e)
+        {
+            string address = "127.0.0.1";
+            int port = 3002;
+          
+            client = new Client(address, port, this);
+            if (client.connect())
+            {
+                connectButton.Enabled = false;
+                uploadButton.Enabled = true;
+                stepButton.Enabled = true;
+            }
+        }
+
+        private void uploadButton_Click(object sender, EventArgs e)
+        {
+            breakPoints = currentFileEditor.getBreakpoints();
+            client.sendMessage(currentFileEditor.GetText() + "\0");
+            client.sendMessage("Steps: ");
+            for (int i = 0; i < breakPoints.Count; i++)
+            {
+                client.sendMessage("," + breakPoints[i]);
+            }
+
+        }
+
+        private void stepButton_Click(object sender, EventArgs e)
+        {
+            client.sendMessage("Time to step");
+        }
+
+        public void displayIncomingText(string msg)
+        {
+            outputBox.Text += msg + "\r\n";
+            outputBox.SelectionStart = statusBox.Text.Length;
+            outputBox.ScrollToCaret();
+        }
+
+        public void displayStatusText(string msg)
+        {
+            string richMsg = ">> " + msg + "\r\n";
+            statusBox.SelectionColor = Color.Black;
+            statusBox.SelectedText = richMsg;
+            statusBox.SelectionStart = statusBox.Text.Length;
+            statusBox.ScrollToCaret();
+        }
+
+        public void displayStatusText(string msg, string type)
+        {
+            if (type.ToLower().Equals("warning")) writeColorText(statusBox, msg, Color.Red);
+            else if (type.ToLower().Equals("info")) writeColorText(statusBox, msg, Color.DarkOrange);
+            else if (type.ToLower().Equals("status")) writeColorText(statusBox, msg, Color.Green);
+            else displayStatusText(msg);
+        }
+
+        private void writeColorText(RichTextBox txt, String msg, Color c)
+        {
+            string richMsg = ">> " + msg + "\r\n";
+            txt.SelectionColor = c;
+            txt.SelectedText = richMsg;
+            txt.SelectionStart = statusBox.Text.Length;
+            txt.ScrollToCaret();
         }
     }
 }
