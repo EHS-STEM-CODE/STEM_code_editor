@@ -2,26 +2,40 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Net.Sockets;
 
 namespace TextEditor_0._01
 {
     class Client
     {
-        ClientMessageDisplay display;
+        private static string address = "127.0.0.1";
+        private static int port;
 
-        public Client(string address, int port, ClientMessageDisplay d)
+        ClientMessageDisplay messageDisplay;
+
+        System.Net.Sockets.TcpClient clientSocket = new System.Net.Sockets.TcpClient();
+
+        public Client(string anAddress, int aPort, ClientMessageDisplay d)
         {
-            display = d;
-            display.displayStatusText("Waiting","warning");
-            for (int i = 0; i < 100; i++) display.displayStatusText("To much text","status");
-            display.displayStatusText("info","info");
+            address = anAddress;
+            port = aPort;
+            messageDisplay = d;
         }
 
-       /* private void connect()
+        public bool connect()
         {
-            display.displayStatusText("Client Started");
-            clientSocket.Connect(address, port);
-            messageDisplay.displayStatusText("Client connected to Server.");
+            try
+            {
+                messageDisplay.displayStatusText("Client Started","info");
+                clientSocket.Connect(address, port);
+                messageDisplay.displayStatusText("Client connected to Server","status");
+                return (true);
+            }
+            catch(System.Net.Sockets.SocketException)
+            {
+                messageDisplay.displayStatusText("Unable to connect to server @ port: " + port + " Address: " + address, "warning");
+                return (false);
+            }
         }
 
 
@@ -36,13 +50,7 @@ namespace TextEditor_0._01
             serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
             string returndata = System.Text.Encoding.ASCII.GetString(inStream);
             returndata = returndata.Substring(0, returndata.IndexOf('\0')); //strip nulls
-            display.displayIncomingText(returndata.Trim());
-        }*/
-
-
-
-
-
-
+            messageDisplay.displayIncomingText(returndata.Trim());
+        }
     }
 }

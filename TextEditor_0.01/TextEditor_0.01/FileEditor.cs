@@ -11,7 +11,7 @@ public class FileEditor
     private Scintilla sci;
     private string path;
     private string shortName;
-    
+
     private bool isDirty;
     private bool isNew;
     private TabControl tabControl;
@@ -40,7 +40,7 @@ public class FileEditor
     }
 
     private void initializeScintilla()
-    {
+    { 
         sci.Margins[0].Width = 32;
         sci.Lexer = Lexer.Cpp;
         sci.Dock = DockStyle.Fill;
@@ -88,8 +88,6 @@ public class FileEditor
 
         sci.TextChanged += TextWasChanged;
 
-
-
         sci.SetProperty("fold", "1");
         sci.SetProperty("fold.compact", "1");
 
@@ -119,6 +117,17 @@ public class FileEditor
 
         // Enable automatic folding
         sci.AutomaticFold = (AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.Change);
+        
+   /*     //Configure margins to display bookmarks
+        sci.Margins[3].Width = 16;
+        sci.Margins[3].Sensitive = true;
+        sci.Margins[3].Type = MarginType.Symbol;
+        sci.Margins[3].Mask = Marker.MaskAll;
+        sci.Margins[3].Cursor = MarginCursor.Arrow;
+
+        sci.Markers[256].Symbol = MarkerSymbol.Bookmark;
+        sci.Markers[256].SetBackColor(Color.DeepSkyBlue);
+        sci.Markers[256].SetForeColor(Color.Black);*/
     }
 
     public Scintilla getScintilla()
@@ -183,6 +192,25 @@ public class FileEditor
     {
         isDirty = true;
         tabControl.SelectedTab.Text = TabLabel();
-    }
-
+   }
+    /*
+    private void scintilla_MarginClick(object sender, MarginClickEventArgs e)
+    {
+        if (e.Margin == 3)
+        {
+            // Do we have a marker for this line?
+            const uint mask = (1 << 256);
+            var line = sci.Lines[sci.LineFromPosition(e.Position)];
+            if ((line.MarkerGet() & mask) > 0)
+            {
+                // Remove existing bookmark
+                line.MarkerDelete(256);
+            }
+            else
+            {
+                // Add bookmark
+                line.MarkerAdd(256);
+            }
+        }
+    }*/
 }

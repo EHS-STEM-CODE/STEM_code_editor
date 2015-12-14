@@ -31,6 +31,8 @@ namespace TextEditor_0._01
         MenuItem mnuClose;
         private static string address = "127.0.0.1";
         private static int port;
+        private Client client;
+        private ArrayList breakPoints;
 
         public MainForm()
         {
@@ -58,6 +60,10 @@ namespace TextEditor_0._01
             mnuClose = new MenuItem("Close");   
             mnuClose.Click += new EventHandler(mnuClose_Click);
             mnu.MenuItems.AddRange(new MenuItem[] { mnuClose });
+
+            uploadButton.Enabled = false;
+            stepButton.Enabled = false;
+            breakPoints = new ArrayList();
 
             OnNewFile();
         }
@@ -275,6 +281,40 @@ namespace TextEditor_0._01
                 }
             }
         }
+
+         private void connectButton_Click(object sender, EventArgs e)
+        {
+            string address = "127.0.0.1";
+            int port = 3002;
+          
+            client = new Client(address, port, this);
+            if (client.connect())
+            {
+                connectButton.Enabled = false;
+                uploadButton.Enabled = true;
+                stepButton.Enabled = true;
+            }
+        }
+
+        private void uploadButton_Click(object sender, EventArgs e)
+        {
+            client.sendMessage(currentFileEditor.GetText());
+            client.sendMessage("Steps: " + breakPoints);
+        }
+
+        private void stepButton_Click(object sender, EventArgs e)
+        {
+            client.sendMessage("Time to step");
+        }
+
+        private void breakPointAdded(int aLine)
+        {
+            int line = aLine;
+            if (breakPoints.Contains(line)) breakPoints.Remove(line);
+            else breakPoints.Add(line);
+            breakPoints.Sort();
+        }
+
 
         public void displayIncomingText(string msg)
         {
