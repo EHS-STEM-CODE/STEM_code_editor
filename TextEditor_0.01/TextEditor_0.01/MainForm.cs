@@ -62,7 +62,7 @@ namespace TextEditor_0._01
             mnu.MenuItems.AddRange(new MenuItem[] { mnuClose });
 
             uploadButton.Enabled = false;
-            stepButton.Enabled = false;
+            //stepButton.Enabled = false;
             breakPoints = new ArrayList();
 
             OnNewFile();
@@ -298,23 +298,20 @@ namespace TextEditor_0._01
 
         private void uploadButton_Click(object sender, EventArgs e)
         {
+            breakPoints = currentFileEditor.getBreakpoints();
             client.sendMessage(currentFileEditor.GetText());
-            client.sendMessage("Steps: " + breakPoints);
+            client.sendMessage("Steps: ");
+            foreach(int i in breakPoints)
+            {
+                client.sendMessage("," + breakPoints[i]);
+            }
+
         }
 
         private void stepButton_Click(object sender, EventArgs e)
         {
             client.sendMessage("Time to step");
         }
-
-        private void breakPointAdded(int aLine)
-        {
-            int line = aLine;
-            if (breakPoints.Contains(line)) breakPoints.Remove(line);
-            else breakPoints.Add(line);
-            breakPoints.Sort();
-        }
-
 
         public void displayIncomingText(string msg)
         {

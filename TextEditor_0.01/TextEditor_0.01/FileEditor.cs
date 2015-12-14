@@ -5,6 +5,7 @@ using System.Text;
 using ScintillaNET;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Collections;
 
 public class FileEditor
 {
@@ -87,6 +88,7 @@ public class FileEditor
                                         Math NaN name Number Object prototype String toString undefined valueOf");
 
         sci.TextChanged += TextWasChanged;
+        sci.MarginClick += scintilla_MarginClick;
 
         sci.SetProperty("fold", "1");
         sci.SetProperty("fold.compact", "1");
@@ -119,19 +121,15 @@ public class FileEditor
         sci.AutomaticFold = (AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.Change);
         
         //Configure margins to display bookmarks
-        sci.Margins[3].Width = 16;
-        sci.Margins[3].Sensitive = true;
-        sci.Margins[3].Type = MarginType.Symbol; 
+        sci.Margins[1].Width = 16;
+        sci.Margins[1].Sensitive = true;
+        sci.Margins[1].Type = MarginType.Symbol; 
         //sci.Margins[3].Mask = Marker.MaskAll; //This line messes with the line folding
-        sci.Margins[3].Cursor = MarginCursor.Arrow;
+        sci.Margins[1].Cursor = MarginCursor.Arrow;
 
         sci.Markers[1].Symbol = MarkerSymbol.Circle;
         sci.Markers[1].SetBackColor(Color.DeepSkyBlue);
         sci.Markers[1].SetForeColor(Color.Black);
-
-        var line = sci.Lines[0];
-        line.MarkerAdd(1);
-
     }
 
     public Scintilla getScintilla()
@@ -197,12 +195,11 @@ public class FileEditor
         isDirty = true;
         tabControl.SelectedTab.Text = TabLabel();
    }
-    
+
     private void scintilla_MarginClick(object sender, MarginClickEventArgs e)
     {
-        sci.Lines[1].MarkerAdd(1);
-      //  if (e.Margin == 3)
-       // {
+        if (e.Margin == 1)
+        {
             // Do we have a marker for this line?
             const uint mask = (1 << 1);
             var line = sci.Lines[sci.LineFromPosition(e.Position)];
@@ -216,6 +213,18 @@ public class FileEditor
                 // Add bookmark
                 line.MarkerAdd(1);
             }
-       // }
+        }
+    }
+   
+    public ArrayList getBreakpoints()
+    {
+        ArrayList bPoints = new ArrayList();
+        const uint mask = (1 << 1);
+        Console.WriteLine("Line numbers = " + sci.Lines.Count);
+        for (int i = 0; i < sci.Lines.Count; i++)
+        {
+            if ((sci.Lines[i].MarkerGet() & mask) > 0) bPoints.Add((i+1));
+        }
+        return (bPoints);
     }
 }
