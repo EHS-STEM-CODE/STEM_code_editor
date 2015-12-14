@@ -12,7 +12,7 @@ namespace Server
 {
     public partial class Form1 : Form
     {
-        TcpListener serverSocket = new TcpListener(System.Net.IPAddress.Parse("127.0.0.1"), 3000);
+        TcpListener serverSocket = new TcpListener(System.Net.IPAddress.Parse("127.0.0.1"), 3002);
         NetworkStream serverStream;
         TcpClient clientSocket;
         public Form1()

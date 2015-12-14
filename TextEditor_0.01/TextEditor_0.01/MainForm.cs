@@ -62,7 +62,7 @@ namespace TextEditor_0._01
             mnu.MenuItems.AddRange(new MenuItem[] { mnuClose });
 
             uploadButton.Enabled = false;
-            //stepButton.Enabled = false;
+            stepButton.Enabled = false;
             breakPoints = new ArrayList();
 
             OnNewFile();
@@ -282,7 +282,7 @@ namespace TextEditor_0._01
             }
         }
 
-         private void connectButton_Click(object sender, EventArgs e)
+        private void connectButton_Click(object sender, EventArgs e)
         {
             string address = "127.0.0.1";
             int port = 3002;
@@ -299,9 +299,9 @@ namespace TextEditor_0._01
         private void uploadButton_Click(object sender, EventArgs e)
         {
             breakPoints = currentFileEditor.getBreakpoints();
-            client.sendMessage(currentFileEditor.GetText());
+            client.sendMessage(currentFileEditor.GetText() + "\0");
             client.sendMessage("Steps: ");
-            foreach(int i in breakPoints)
+            for (int i = 0; i < breakPoints.Count; i++)
             {
                 client.sendMessage("," + breakPoints[i]);
             }
