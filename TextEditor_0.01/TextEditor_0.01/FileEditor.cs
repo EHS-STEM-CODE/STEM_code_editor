@@ -118,16 +118,20 @@ public class FileEditor
         // Enable automatic folding
         sci.AutomaticFold = (AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.Change);
         
-   /*     //Configure margins to display bookmarks
+        //Configure margins to display bookmarks
         sci.Margins[3].Width = 16;
         sci.Margins[3].Sensitive = true;
-        sci.Margins[3].Type = MarginType.Symbol;
-        sci.Margins[3].Mask = Marker.MaskAll;
+        sci.Margins[3].Type = MarginType.Symbol; 
+        //sci.Margins[3].Mask = Marker.MaskAll; //This line messes with the line folding
         sci.Margins[3].Cursor = MarginCursor.Arrow;
 
-        sci.Markers[256].Symbol = MarkerSymbol.Bookmark;
-        sci.Markers[256].SetBackColor(Color.DeepSkyBlue);
-        sci.Markers[256].SetForeColor(Color.Black);*/
+        sci.Markers[1].Symbol = MarkerSymbol.Circle;
+        sci.Markers[1].SetBackColor(Color.DeepSkyBlue);
+        sci.Markers[1].SetForeColor(Color.Black);
+
+        var line = sci.Lines[0];
+        line.MarkerAdd(1);
+
     }
 
     public Scintilla getScintilla()
@@ -193,24 +197,25 @@ public class FileEditor
         isDirty = true;
         tabControl.SelectedTab.Text = TabLabel();
    }
-    /*
+    
     private void scintilla_MarginClick(object sender, MarginClickEventArgs e)
     {
-        if (e.Margin == 3)
-        {
+        sci.Lines[1].MarkerAdd(1);
+      //  if (e.Margin == 3)
+       // {
             // Do we have a marker for this line?
-            const uint mask = (1 << 256);
+            const uint mask = (1 << 1);
             var line = sci.Lines[sci.LineFromPosition(e.Position)];
             if ((line.MarkerGet() & mask) > 0)
             {
                 // Remove existing bookmark
-                line.MarkerDelete(256);
+                line.MarkerDelete(1);
             }
             else
             {
                 // Add bookmark
-                line.MarkerAdd(256);
+                line.MarkerAdd(1);
             }
-        }
-    }*/
+       // }
+    }
 }
