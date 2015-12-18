@@ -153,12 +153,14 @@
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.splitContainer2.Panel1MinSize = 50;
             // 
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer3);
+            this.splitContainer2.Panel2MinSize = 50;
             this.splitContainer2.Size = new System.Drawing.Size(957, 552);
-            this.splitContainer2.SplitterDistance = 319;
+            this.splitContainer2.SplitterDistance = 425;
             this.splitContainer2.TabIndex = 0;
             // 
             // splitContainer3
@@ -175,8 +177,8 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.statusBox);
-            this.splitContainer3.Panel2MinSize = 50;
-            this.splitContainer3.Size = new System.Drawing.Size(957, 229);
+            this.splitContainer3.Panel2MinSize = 175;
+            this.splitContainer3.Size = new System.Drawing.Size(957, 123);
             this.splitContainer3.SplitterDistance = 500;
             this.splitContainer3.TabIndex = 0;
             // 
@@ -186,7 +188,7 @@
             this.outputBox.Location = new System.Drawing.Point(0, 0);
             this.outputBox.Name = "outputBox";
             this.outputBox.ReadOnly = true;
-            this.outputBox.Size = new System.Drawing.Size(500, 229);
+            this.outputBox.Size = new System.Drawing.Size(500, 123);
             this.outputBox.TabIndex = 0;
             this.outputBox.Text = "";
             // 
@@ -197,7 +199,7 @@
             this.statusBox.Location = new System.Drawing.Point(0, 0);
             this.statusBox.Name = "statusBox";
             this.statusBox.ReadOnly = true;
-            this.statusBox.Size = new System.Drawing.Size(453, 229);
+            this.statusBox.Size = new System.Drawing.Size(453, 123);
             this.statusBox.TabIndex = 0;
             this.statusBox.Text = "";
             // 

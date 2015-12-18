@@ -30,6 +30,8 @@
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.codeBox = new System.Windows.Forms.RichTextBox();
+            this.StopButton = new System.Windows.Forms.Button();
+            this.ListenButton = new System.Windows.Forms.Button();
             this.outputBox = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -50,6 +52,8 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.StopButton);
+            this.splitContainer1.Panel2.Controls.Add(this.ListenButton);
             this.splitContainer1.Panel2.Controls.Add(this.outputBox);
             this.splitContainer1.Size = new System.Drawing.Size(874, 680);
             this.splitContainer1.SplitterDistance = 330;
@@ -65,16 +69,34 @@
             this.codeBox.TabIndex = 0;
             this.codeBox.Text = "";
             // 
+            // StopButton
+            // 
+            this.StopButton.Location = new System.Drawing.Point(437, 271);
+            this.StopButton.Name = "StopButton";
+            this.StopButton.Size = new System.Drawing.Size(437, 71);
+            this.StopButton.TabIndex = 2;
+            this.StopButton.Text = "Stop Listening";
+            this.StopButton.UseVisualStyleBackColor = true;
+            this.StopButton.Click += new System.EventHandler(this.StopButton_Click);
+            // 
+            // ListenButton
+            // 
+            this.ListenButton.Location = new System.Drawing.Point(0, 271);
+            this.ListenButton.Name = "ListenButton";
+            this.ListenButton.Size = new System.Drawing.Size(437, 71);
+            this.ListenButton.TabIndex = 1;
+            this.ListenButton.Text = "Listen";
+            this.ListenButton.UseVisualStyleBackColor = true;
+            this.ListenButton.Click += new System.EventHandler(this.ListenButton_Click);
+            // 
             // outputBox
             // 
-            this.outputBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.outputBox.Location = new System.Drawing.Point(0, 0);
             this.outputBox.Name = "outputBox";
             this.outputBox.ReadOnly = true;
-            this.outputBox.Size = new System.Drawing.Size(874, 346);
+            this.outputBox.Size = new System.Drawing.Size(874, 269);
             this.outputBox.TabIndex = 0;
             this.outputBox.Text = "";
-            this.outputBox.TextChanged += new System.EventHandler(this.outputBox_TextChanged);
             // 
             // Form1
             // 
@@ -97,6 +119,8 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.RichTextBox codeBox;
         private System.Windows.Forms.RichTextBox outputBox;
+        private System.Windows.Forms.Button ListenButton;
+        private System.Windows.Forms.Button StopButton;
     }
 }
 

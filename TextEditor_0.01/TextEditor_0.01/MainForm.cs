@@ -310,7 +310,7 @@ namespace TextEditor_0._01
 
         private void stepButton_Click(object sender, EventArgs e)
         {
-            client.sendMessage("Time to step");
+            //client.sendMessage("Time to step");
         }
 
         public void displayIncomingText(string msg)

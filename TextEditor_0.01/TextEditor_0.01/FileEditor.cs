@@ -220,7 +220,6 @@ public class FileEditor
     {
         ArrayList bPoints = new ArrayList();
         const uint mask = (1 << 1);
-        Console.WriteLine("Line numbers = " + sci.Lines.Count);
         for (int i = 0; i < sci.Lines.Count; i++)
         {
             if ((sci.Lines[i].MarkerGet() & mask) > 0) bPoints.Add((i+1));

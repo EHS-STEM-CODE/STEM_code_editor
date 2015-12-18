@@ -13,7 +13,7 @@ namespace TextEditor_0._01
 
         ClientMessageDisplay messageDisplay;
 
-        System.Net.Sockets.TcpClient clientSocket = new System.Net.Sockets.TcpClient();
+        TcpClient clientSocket = new TcpClient();
 
         public Client(string anAddress, int aPort, ClientMessageDisplay d)
         {
@@ -29,9 +29,17 @@ namespace TextEditor_0._01
                 messageDisplay.displayStatusText("Client Started","info");
                 clientSocket.Connect(address, port);
                 messageDisplay.displayStatusText("Client connected to Server","status");
-                return (true);
+                NetworkStream serverStream = clientSocket.GetStream();
+
+                byte[] inStream = new byte[10025];
+                serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
+                string returndata = Encoding.ASCII.GetString(inStream);
+                returndata = returndata.Substring(0, returndata.IndexOf('\0')); //strip nulls
+                messageDisplay.displayIncomingText(returndata.Trim());
+                serverStream.Flush();
+                return true;
             }
-            catch(System.Net.Sockets.SocketException)
+            catch(SocketException)
             {
                 messageDisplay.displayStatusText("Unable to connect to server @ port: " + port + " Address: " + address, "warning");
                 return (false);
@@ -42,13 +50,13 @@ namespace TextEditor_0._01
         public void sendMessage(string msg)
         {
             NetworkStream serverStream = clientSocket.GetStream();
-            byte[] outStream = System.Text.Encoding.ASCII.GetBytes(msg);
+            byte[] outStream = Encoding.ASCII.GetBytes(msg);
             serverStream.Write(outStream, 0, outStream.Length);
             serverStream.Flush();
 
             byte[] inStream = new byte[10025];
             serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
-            string returndata = System.Text.Encoding.ASCII.GetString(inStream);
+            string returndata = Encoding.ASCII.GetString(inStream);
             returndata = returndata.Substring(0, returndata.IndexOf('\0')); //strip nulls
             messageDisplay.displayIncomingText(returndata.Trim());
             serverStream.Flush();
