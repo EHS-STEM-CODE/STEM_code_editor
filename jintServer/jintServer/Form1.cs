@@ -11,7 +11,7 @@ using System.Threading;
 namespace jintServer
 {
 	public interface TwoWayMessageDisplay{
-		void displayIncomingText (string msg);
+		void displayOutgoingText (string msg);
 		void displayStatusText(string msg);
 	}
 
@@ -27,15 +27,17 @@ namespace jintServer
 
         delegate void SetTextCallBack(string msg);
 
-        public void displayIncomingText(string msg){
+        public void displayOutgoingText(string msg){
             if (codeBox.InvokeRequired)
             {
-                SetTextCallBack d = new SetTextCallBack(displayIncomingText);
+                SetTextCallBack d = new SetTextCallBack(displayOutgoingText);
                 this.Invoke(d, new object[] { msg });
             }
             else
             {
-                this.codeBox.AppendText(msg + "\n");
+                this.codeBox.Text = msg;
+				codeBox.SelectionStart = codeBox.Text.Length;
+				codeBox.ScrollToCaret ();
             }
         }
 
@@ -47,7 +49,9 @@ namespace jintServer
             }
             else
             {
-                this.outputBox.Text = msg;
+                this.outputBox.Text += msg + "\n";
+				outputBox.SelectionStart = outputBox.Text.Length;
+				outputBox.ScrollToCaret ();
             }
         }       
 
@@ -69,7 +73,5 @@ namespace jintServer
             StopButton.Enabled = false;
             ListenButton.Enabled = true;
         }
-
-        protected override void OnClosing(CancelEventArgs e) { }
     }
 }

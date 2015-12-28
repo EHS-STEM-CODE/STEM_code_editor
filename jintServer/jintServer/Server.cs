@@ -58,7 +58,7 @@ namespace jintServer
         bool running;
         string clNo;
         TwoWayMessageDisplay messageDisplay;
-        string outputMessage;
+		string outputMessage;
 
         public void startClient(TcpClient inClientSocket, string clientNumber)
         {
@@ -106,11 +106,10 @@ namespace jintServer
                     networkStream.Read(bytesFrom, 0, (int)clientSocket.ReceiveBufferSize);
                     dataFromClient = Encoding.ASCII.GetString(bytesFrom);
                     dataFromClient = dataFromClient.Substring(0, dataFromClient.IndexOf('\0'));
-                    string msg = "(" + clNo + ") " + dataFromClient.Trim();
-                    messageDisplay.displayIncomingText(msg);
+                    messageDisplay.displayStatusText("Received code from client No. " + clNo);
 
                     rCount = Convert.ToString(requestCount);
-
+					outputMessage = "";
                     try
                     {
                         engine.Execute(dataFromClient);
@@ -120,7 +119,8 @@ namespace jintServer
                     }
                     sendBytes = Encoding.ASCII.GetBytes(outputMessage);
                     networkStream.Write(sendBytes, 0, sendBytes.Length);
-                    messageDisplay.displayStatusText(serverResponse);
+                    messageDisplay.displayStatusText("Output sent to client No. " + clNo);
+					messageDisplay.displayOutgoingText(outputMessage);
                 }
                 catch (Exception ex)
                 {

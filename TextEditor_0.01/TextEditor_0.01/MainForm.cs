@@ -315,9 +315,9 @@ namespace TextEditor_0._01
 
         public void displayIncomingText(string msg)
         {
-            outputBox.Text += msg + "\r\n";
-            outputBox.SelectionStart = statusBox.Text.Length;
-            outputBox.ScrollToCaret();
+            outputBox.Text = msg;
+           	outputBox.SelectionStart = statusBox.Text.Length;
+			outputBox.ScrollToCaret ();
         }
 
         public void displayStatusText(string msg)
