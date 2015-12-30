@@ -298,16 +298,19 @@ namespace TextEditor_0._01
 
         private void uploadButton_Click(object sender, EventArgs e)
         {
-            breakPoints = currentFileEditor.getBreakpoints();
-            client.sendMessage(currentFileEditor.GetText() + "\0");
-            /*client.sendMessage("Steps: ");
-            for (int i = 0; i < breakPoints.Count; i++)
+            if (client.isConnected())
             {
-                client.sendMessage("," + breakPoints[i]);
+                breakPoints = currentFileEditor.getBreakpoints();
+                client.sendMessage(currentFileEditor.GetText() + "\0");
             }
-            */
+            else
+            {
+                displayStatusText("Connection broken @ " + port + " Address: " + address, "warning");
+                connectButton.Enabled = true;
+                uploadButton.Enabled = false;
+                stepButton.Enabled = false;
+            }
         }
-
         private void stepButton_Click(object sender, EventArgs e)
         {
             //client.sendMessage("Time to step");
@@ -332,7 +335,7 @@ namespace TextEditor_0._01
         public void displayStatusText(string msg, string type)
         {
             if (type.ToLower().Equals("warning")) writeColorText(statusBox, msg, Color.Red);
-            else if (type.ToLower().Equals("info")) writeColorText(statusBox, msg, Color.DarkOrange);
+            else if (type.ToLower().Equals("info")) writeColorText(statusBox, msg, Color.Blue);
             else if (type.ToLower().Equals("status")) writeColorText(statusBox, msg, Color.Green);
             else displayStatusText(msg);
         }

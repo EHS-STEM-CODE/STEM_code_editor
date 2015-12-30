@@ -53,7 +53,21 @@ namespace jintServer
 				outputBox.SelectionStart = outputBox.Text.Length;
 				outputBox.ScrollToCaret ();
             }
-        }       
+        }
+
+        delegate void SetColorCallBack(Color c);
+        public void changeButtonColor(Color c)
+        { 
+            if (outputBox.InvokeRequired)
+            {
+                SetColorCallBack d = new SetColorCallBack(changeButtonColor);
+                this.Invoke(d, new object[] { c });
+            }
+            else
+            {
+                this.button1.BackColor = c;
+            }
+        }      
 
         private void ListenButton_Click(object sender, EventArgs e)
         {
@@ -61,7 +75,8 @@ namespace jintServer
             StopButton.Enabled = true;
             string address = "127.0.0.1";
             int port = 3002;
-            server = new Server(address, port, this);
+            server = new Server(address, port, this, this);
+
             Thread ctThread = new Thread(server.listen);
             ctThread.Start();
             

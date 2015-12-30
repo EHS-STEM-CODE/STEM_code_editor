@@ -54,12 +54,27 @@ namespace TextEditor_0._01
             serverStream.Write(outStream, 0, outStream.Length);
             serverStream.Flush();
 
-            byte[] inStream = new byte[10025];
-            serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
-            string returndata = Encoding.ASCII.GetString(inStream);
-            returndata = returndata.Substring(0, returndata.IndexOf('\0')); //strip nulls
-            messageDisplay.displayIncomingText(returndata.Trim());
-            serverStream.Flush();
+            byte[] inStream = new byte[10025]; 
+            try
+            {
+                serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
+                string returndata = Encoding.ASCII.GetString(inStream);
+                returndata = returndata.Substring(0, returndata.IndexOf('\0')); //strip nulls
+                messageDisplay.displayIncomingText(returndata.Trim());
+                serverStream.Flush();
+            }
+            catch (System.IO.IOException ioex)
+            {
+                if (!clientSocket.Connected)
+                    messageDisplay.displayStatusText("Lost the client connection", "warning");
+                else
+                    messageDisplay.displayStatusText("Unkown IO Exception " + ioex.Message, "warning");
+            }
+        }
+
+        public bool isConnected()
+        {
+            return(clientSocket.Connected);
         }
     }
 }

@@ -33,6 +33,7 @@
             this.StopButton = new System.Windows.Forms.Button();
             this.ListenButton = new System.Windows.Forms.Button();
             this.outputBox = new System.Windows.Forms.RichTextBox();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -48,6 +49,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.button1);
             this.splitContainer1.Panel1.Controls.Add(this.codeBox);
             // 
             // splitContainer1.Panel2
@@ -61,11 +63,10 @@
             // 
             // codeBox
             // 
-            this.codeBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.codeBox.Location = new System.Drawing.Point(0, 0);
             this.codeBox.Name = "codeBox";
             this.codeBox.ReadOnly = true;
-            this.codeBox.Size = new System.Drawing.Size(874, 330);
+            this.codeBox.Size = new System.Drawing.Size(661, 330);
             this.codeBox.TabIndex = 0;
             this.codeBox.Text = "";
             // 
@@ -98,6 +99,18 @@
             this.outputBox.TabIndex = 0;
             this.outputBox.Text = "";
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.button1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.button1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.button1.Location = new System.Drawing.Point(654, 0);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(220, 330);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -121,6 +134,7 @@
         private System.Windows.Forms.RichTextBox outputBox;
         private System.Windows.Forms.Button ListenButton;
         private System.Windows.Forms.Button StopButton;
+        private System.Windows.Forms.Button button1;
     }
 }
 
