@@ -8,8 +8,9 @@ namespace TextEditor_0._01
 {
     class Client
     {
-        private static string address = "127.0.0.1";
+        private static string address;
         private static int port;
+        private int messageCount;
 
         ClientMessageDisplay messageDisplay;
 
@@ -20,28 +21,29 @@ namespace TextEditor_0._01
             address = anAddress;
             port = aPort;
             messageDisplay = d;
+            messageCount = 0;
         }
 
         public bool connect()
         {
             try
             {
-                messageDisplay.displayStatusText("Client Started","info");
+                messageDisplay.DisplayStatusText("Client Started","info");
                 clientSocket.Connect(address, port);
-                messageDisplay.displayStatusText("Client connected to Server","status");
+                messageDisplay.DisplayStatusText("Client connected to Server","status");
                 NetworkStream serverStream = clientSocket.GetStream();
 
                 byte[] inStream = new byte[10025];
                 serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
                 string returndata = Encoding.ASCII.GetString(inStream);
                 returndata = returndata.Substring(0, returndata.IndexOf('\0')); //strip nulls
-                messageDisplay.displayIncomingText(returndata.Trim());
+                messageDisplay.DisplayIncomingText(returndata.Trim());
                 serverStream.Flush();
                 return true;
             }
             catch(SocketException)
             {
-                messageDisplay.displayStatusText("Unable to connect to server @ port: " + port + " Address: " + address, "warning");
+                messageDisplay.DisplayStatusText("Unable to connect to server @ port: " + port + " Address: " + address, "warning");
                 return (false);
             }
         }
@@ -49,26 +51,43 @@ namespace TextEditor_0._01
 
         public void sendMessage(string msg)
         {
+            String ack = "ok_tx\n";
             NetworkStream serverStream = clientSocket.GetStream();
-            byte[] outStream = Encoding.ASCII.GetBytes(msg);
-            serverStream.Write(outStream, 0, outStream.Length);
-            serverStream.Flush();
-
+            try {
+                byte[] outStream = Encoding.ASCII.GetBytes(msg);
+                serverStream.Write(outStream, 0, outStream.Length);
+                serverStream.Flush();
+                messageCount++;
+            }
+            catch(System.IO.IOException)
+            {
+                messageDisplay.DisplayStatusText("Unable to connect to the server", "warning");
+            } 
+            messageDisplay.DisplayStatusText("Message #" + messageCount + " sent", "info");
             byte[] inStream = new byte[10025]; 
             try
             {
                 serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
                 string returndata = Encoding.ASCII.GetString(inStream);
                 returndata = returndata.Substring(0, returndata.IndexOf('\0')); //strip nulls
-                messageDisplay.displayIncomingText(returndata.Trim());
+
+                if (returndata.Contains(ack))
+                {
+                    returndata = returndata.Substring(ack.Length);
+                    messageDisplay.DisplayStatusText("Return message #" + messageCount + " received", "info");
+                }
+
+                messageDisplay.DisplayIncomingText(returndata.Trim());
                 serverStream.Flush();
+               
+                
             }
             catch (System.IO.IOException ioex)
             {
                 if (!clientSocket.Connected)
-                    messageDisplay.displayStatusText("Lost the client connection", "warning");
+                    messageDisplay.DisplayStatusText("Lost the server connection", "warning");
                 else
-                    messageDisplay.displayStatusText("Unkown IO Exception " + ioex.Message, "warning");
+                    messageDisplay.DisplayStatusText("Unkown IO Exception " + ioex.Message, "warning");
             }
         }
 

@@ -25,7 +25,7 @@ public class FileEditor
         shortName = "untitled";
         this.tabControl = tabControl;
         sci = new Scintilla();
-        initializeScintilla();
+        InitializeScintilla();
     }
 
     public FileEditor(TabControl _tabControl, string _path, string _shortName, string _text)
@@ -37,10 +37,10 @@ public class FileEditor
         shortName = _shortName;
         sci = new Scintilla();
         sci.Text = _text;
-        initializeScintilla();
+        InitializeScintilla();
     }
 
-    private void initializeScintilla()
+    private void InitializeScintilla()
     { 
         sci.Margins[0].Width = 32;
         sci.Lexer = Lexer.Cpp;
@@ -86,9 +86,8 @@ public class FileEditor
         //javascript global classes and typedef keywords Style: GlobalClass
         sci.SetKeywords(3, @"Array Date eval hasOwnProperty Infinity isFinite isNaN isPrototypeOf length
                                         Math NaN name Number Object prototype String toString undefined valueOf");
-
         sci.TextChanged += TextWasChanged;
-        sci.MarginClick += scintilla_MarginClick;
+        sci.MarginClick += Scintilla_MarginClick;
 
         sci.SetProperty("fold", "1");
         sci.SetProperty("fold.compact", "1");
@@ -132,7 +131,7 @@ public class FileEditor
         sci.Markers[1].SetForeColor(Color.Black);
     }
 
-    public Scintilla getScintilla()
+    public Scintilla GetScintilla()
     {
         return (sci);
     }
@@ -196,7 +195,7 @@ public class FileEditor
         tabControl.SelectedTab.Text = TabLabel();
    }
 
-    private void scintilla_MarginClick(object sender, MarginClickEventArgs e)
+    private void Scintilla_MarginClick(object sender, MarginClickEventArgs e)
     {
         if (e.Margin == 1)
         {
@@ -216,7 +215,7 @@ public class FileEditor
         }
     }
    
-    public ArrayList getBreakpoints()
+    public ArrayList GetBreakpoints()           //Break point functionallity is not used currently due to the lack of debugger options, ready for future implementation.
     {
         ArrayList bPoints = new ArrayList();
         const uint mask = (1 << 1);

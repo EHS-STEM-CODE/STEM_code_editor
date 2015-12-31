@@ -128,7 +128,7 @@ namespace jintServer
                     messageDisplay.displayStatusText("Received code from client No. " + clNo);
 
                     rCount = Convert.ToString(requestCount);
-                    outputMessage = "ok\n";
+                    outputMessage = "ok_tx\n";
                     try
                     {
                         engine.Execute(dataFromClient);
@@ -164,17 +164,24 @@ namespace jintServer
     
     public class indy
     {
-        private bool On = true;
         public indy()
         {
 
         }
 
-      
-
-        public void setColor(Color c)
+        public void SetText(string text)
         {
-            Server.form.changeButtonColor(c);
+            Server.form.ChangeButtonText(text);
+        }
+      
+        public void SetColor(Color c)
+        {
+            Server.form.ChangeButtonColor(c);
+        }
+
+        public void SetTextColor(Color c)
+        {
+            Server.form.ChangeButtonTextColor(c);
         }
 
         public override string ToString()

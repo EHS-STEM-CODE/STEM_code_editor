@@ -23,6 +23,7 @@ namespace jintServer
         {
             InitializeComponent();
             StopButton.Enabled = false;
+            textBox1.Text = (System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList.FirstOrDefault(ip => ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)).ToString();
         }
 
         delegate void SetTextCallBack(string msg);
@@ -56,30 +57,65 @@ namespace jintServer
         }
 
         delegate void SetColorCallBack(Color c);
-        public void changeButtonColor(Color c)
+        public void ChangeButtonColor(Color c)
         { 
             if (outputBox.InvokeRequired)
             {
-                SetColorCallBack d = new SetColorCallBack(changeButtonColor);
+                SetColorCallBack d = new SetColorCallBack(ChangeButtonColor);
                 this.Invoke(d, new object[] { c });
             }
             else
             {
                 this.button1.BackColor = c;
             }
-        }      
+        }
+
+        public void ChangeButtonTextColor(Color c)
+        {
+            if (outputBox.InvokeRequired)
+            {
+                SetColorCallBack d = new SetColorCallBack(ChangeButtonTextColor);
+                this.Invoke(d, new object[] { c });
+            }
+            else
+            {
+                this.button1.ForeColor = c;
+            }
+        }
+
+        public void ChangeButtonText(String txt)
+        {
+            if (outputBox.InvokeRequired)
+            {
+                SetTextCallBack d = new SetTextCallBack(ChangeButtonText);
+                this.Invoke(d, new object[] { txt });
+            }
+            else
+            {
+                this.button1.Text = txt;
+            }
+        }
 
         private void ListenButton_Click(object sender, EventArgs e)
         {
-            ListenButton.Enabled = false;
-            StopButton.Enabled = true;
-            string address = "127.0.0.1";
-            int port = 3002;
-            server = new Server(address, port, this, this);
+           
+            try {
+                
+                string address = "127.0.0.1";
+                int port = Int32.Parse(textBox2.Text);
+                server = new Server(address, port, this, this);
 
-            Thread ctThread = new Thread(server.listen);
-            ctThread.Start();
-            
+                Thread ctThread = new Thread(server.listen);
+                ctThread.Start();
+
+                ListenButton.Enabled = false;
+                StopButton.Enabled = true;
+            }
+            catch(System.FormatException)
+            {
+                displayStatusText("Invalid path");
+            }
+                   
         }
 
         private void StopButton_Click(object sender, EventArgs e)
@@ -88,5 +124,7 @@ namespace jintServer
             StopButton.Enabled = false;
             ListenButton.Enabled = true;
         }
+
+
     }
 }

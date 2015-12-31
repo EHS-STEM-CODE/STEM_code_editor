@@ -10,15 +10,16 @@ using System.IO;
 using ScintillaNET;
 using Jint;
 
+
 namespace TextEditor_0._01
 {
 
 
     public interface ClientMessageDisplay
     {
-        void displayIncomingText(string msg);
-        void displayStatusText(string msg);
-        void displayStatusText(string msg, string type);
+        void DisplayIncomingText(string msg);
+        void DisplayStatusText(string msg);
+        void DisplayStatusText(string msg, string type);
     }
 
 
@@ -48,7 +49,7 @@ namespace TextEditor_0._01
             tabControl = new TabControl();
             tabControl.Name = "tabControl";
             tabControl.Selected += TabControl_Selected;
-            tabControl.MouseUp += tabControl_MouseUp;
+            tabControl.MouseUp += TabControl_MouseUp;
             menuStrip1.Dock = DockStyle.Top;
             tabControl.Dock = DockStyle.Fill;
             splitContainer1.Panel1.Controls.Add(tabControl);
@@ -58,7 +59,7 @@ namespace TextEditor_0._01
 
             mnu = new ContextMenu();
             mnuClose = new MenuItem("Close");   
-            mnuClose.Click += new EventHandler(mnuClose_Click);
+            mnuClose.Click += new EventHandler(MnuClose_Click);
             mnu.MenuItems.AddRange(new MenuItem[] { mnuClose });
 
             uploadButton.Enabled = false;
@@ -75,7 +76,7 @@ namespace TextEditor_0._01
             TabPage newTab = new TabPage(currentFileEditor.ShortName());
             tabControl.TabPages.Add(newTab);
 
-            newTab.Controls.Add(currentFileEditor.getScintilla());
+            newTab.Controls.Add(currentFileEditor.GetScintilla());
             tabControl.SelectTab(fileEditors.Count - 1);
 
             port = 3002;
@@ -97,13 +98,13 @@ namespace TextEditor_0._01
             if (currentFileEditor.IsDirty())
             {
                 if (currentFileEditor.IsNew())
-                    saveAs();
+                    SaveAs();
                 else
-                    save(currentFileEditor.Path());
+                    Save(currentFileEditor.Path());
             }
         }
 
-        private void save(String path)
+        private void Save(String path)
         {
             System.IO.StreamWriter saveFile = new System.IO.StreamWriter(path);
             String lines = currentFileEditor.GetText();
@@ -114,18 +115,18 @@ namespace TextEditor_0._01
             tabControl.SelectedTab.Text = currentFileEditor.ShortName();
         }
 
-        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            saveAs();
+            SaveAs();
         }
 
-        private bool saveAs()
+        private bool SaveAs()
         {
             bool success = false;
             System.Windows.Forms.DialogResult result = saveFileDialog1.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK)
             {
-                save(saveFileDialog1.FileName);
+                Save(saveFileDialog1.FileName);
                 currentFileEditor.SetPath(saveFileDialog1.FileName);
                 currentFileEditor.SetShortName(Path.GetFileName(saveFileDialog1.FileName));
                 currentFileEditor.SetNew(false);
@@ -148,7 +149,7 @@ namespace TextEditor_0._01
                     fileEditors[currentTabIndex] = newFileEditor;
                     tabControl.SelectedTab.Text = openFileDialog1.SafeFileName;
                     tabControl.SelectedTab.Controls.Clear();
-                    tabControl.SelectedTab.Controls.Add(currentFileEditor.getScintilla());
+                    tabControl.SelectedTab.Controls.Add(currentFileEditor.GetScintilla());
                 }
                 else
                 {
@@ -156,7 +157,7 @@ namespace TextEditor_0._01
                     tabControl.TabPages.Add(newTab);
                     currentFileEditor = newFileEditor;
                     fileEditors.Add(newFileEditor);
-                    newTab.Controls.Add(currentFileEditor.getScintilla());
+                    newTab.Controls.Add(currentFileEditor.GetScintilla());
                     tabControl.SelectTab(fileEditors.Count - 1);
                 }
                 openFile.Close();
@@ -168,9 +169,9 @@ namespace TextEditor_0._01
             CloseFile();
         }
 
-        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CloseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            closeTab();
+            CloseTab();
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -193,7 +194,7 @@ namespace TextEditor_0._01
                         DialogResult result = MessageBox.Show("Do you want to save this file?", "Saving new file", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                         if (result == DialogResult.Yes)
                         {
-                            if (saveAs() == false)
+                            if (SaveAs() == false)
                                 return false;
                         }
                         else if (result == DialogResult.Cancel)
@@ -203,7 +204,7 @@ namespace TextEditor_0._01
                     {
                         DialogResult result = MessageBox.Show("Do you want to save " + currentFileEditor.ShortName() + "?", "Saving file", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                         if (result == DialogResult.Yes)
-                            save(currentFileEditor.Path());
+                            Save(currentFileEditor.Path());
                         else if (result == DialogResult.Cancel)
                             return false;
                     }
@@ -213,12 +214,12 @@ namespace TextEditor_0._01
             return true;
         }
 
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OnNewFile();
         }
 
-        private void tabControl_MouseUp(object sender, MouseEventArgs e)
+        private void TabControl_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
@@ -235,12 +236,12 @@ namespace TextEditor_0._01
             }
         }
 
-        private void mnuClose_Click(object sender, EventArgs e)
+        private void MnuClose_Click(object sender, EventArgs e)
         {
-            closeTab();
+            CloseTab();
         }
 
-        private void closeTab()
+        private void CloseTab()
         {
             bool success = true;
             int currentTabIndex = tabControl.SelectedIndex;
@@ -251,7 +252,7 @@ namespace TextEditor_0._01
                 {
                     DialogResult result = MessageBox.Show("Do you want to save " + currentFileEditor.ShortName() + "?", "Saving file", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                     if (result == DialogResult.Yes)
-                        success = saveAs();
+                        success = SaveAs();
                     else if (result == DialogResult.Cancel)
                         success = false;
                 }
@@ -259,7 +260,7 @@ namespace TextEditor_0._01
                 {
                     DialogResult result = MessageBox.Show("Do you want to save " + currentFileEditor.ShortName() + "?", "Saving file", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                     if (result == DialogResult.Yes)
-                        save(currentFileEditor.Path());
+                        Save(currentFileEditor.Path());
                     else if (result == DialogResult.Cancel)
                         success = false;
                 }
@@ -282,10 +283,10 @@ namespace TextEditor_0._01
             }
         }
 
-        private void connectButton_Click(object sender, EventArgs e)
+        private void ConnectButton_Click(object sender, EventArgs e)
         {
-            string address = "127.0.0.1";
-            int port = 3002;
+            string address = textBox1.Text;
+            int port = Int32.Parse(textBox2.Text);
           
             client = new Client(address, port, this);
             if (client.connect())
@@ -296,34 +297,34 @@ namespace TextEditor_0._01
             }
         }
 
-        private void uploadButton_Click(object sender, EventArgs e)
+        private void UploadButton_Click(object sender, EventArgs e)
         {
             if (client.isConnected())
             {
-                breakPoints = currentFileEditor.getBreakpoints();
+                breakPoints = currentFileEditor.GetBreakpoints();
                 client.sendMessage(currentFileEditor.GetText() + "\0");
             }
             else
             {
-                displayStatusText("Connection broken @ " + port + " Address: " + address, "warning");
+                DisplayStatusText("Connection broken @ " + port + " Address: " + address, "warning");
                 connectButton.Enabled = true;
                 uploadButton.Enabled = false;
                 stepButton.Enabled = false;
             }
         }
-        private void stepButton_Click(object sender, EventArgs e)
+        private void StepButton_Click(object sender, EventArgs e)
         {
             //client.sendMessage("Time to step");
         }
 
-        public void displayIncomingText(string msg)
+        public void DisplayIncomingText(string msg)
         {
             outputBox.Text = msg;
            	outputBox.SelectionStart = statusBox.Text.Length;
 			outputBox.ScrollToCaret ();
         }
 
-        public void displayStatusText(string msg)
+        public void DisplayStatusText(string msg)
         {
             string richMsg = ">> " + msg + "\r\n";
             statusBox.SelectionColor = Color.Black;
@@ -332,15 +333,15 @@ namespace TextEditor_0._01
             statusBox.ScrollToCaret();
         }
 
-        public void displayStatusText(string msg, string type)
+        public void DisplayStatusText(string msg, string type)
         {
-            if (type.ToLower().Equals("warning")) writeColorText(statusBox, msg, Color.Red);
-            else if (type.ToLower().Equals("info")) writeColorText(statusBox, msg, Color.Blue);
-            else if (type.ToLower().Equals("status")) writeColorText(statusBox, msg, Color.Green);
-            else displayStatusText(msg);
+            if (type.ToLower().Equals("warning")) WriteColorText(statusBox, msg, Color.Red);
+            else if (type.ToLower().Equals("info")) WriteColorText(statusBox, msg, Color.Blue);
+            else if (type.ToLower().Equals("status")) WriteColorText(statusBox, msg, Color.Green);
+            else DisplayStatusText(msg);
         }
 
-        private void writeColorText(RichTextBox txt, String msg, Color c)
+        private void WriteColorText(RichTextBox txt, String msg, Color c)
         {
             string richMsg = ">> " + msg + "\r\n";
             txt.SelectionColor = c;
