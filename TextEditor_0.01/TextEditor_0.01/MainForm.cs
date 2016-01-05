@@ -31,6 +31,7 @@ namespace TextEditor_0._01
         private static int port;
         private Client client;
         private ArrayList breakPoints;
+		private string lastSessionName = "lastSession.txt";
 
         public MainForm()
         {
@@ -63,21 +64,42 @@ namespace TextEditor_0._01
             stepButton.Enabled = false;
             breakPoints = new ArrayList();
 
-            OnNewFile();
+			if (!File.Exists (lastSessionName))
+				OnNewFile ();
+			else {
+				using (StreamReader reader = new StreamReader (lastSessionName)) {
+					string line;
+					while ((line = reader.ReadLine ()) != null) {
+						if (line.Equals ("new tab")) {
+							currentFileEditor = new FileEditor (tabControl);
+							fileEditors.Add (currentFileEditor);
+							TabPage newTab = new TabPage (currentFileEditor.ShortName ());
+							tabControl.Controls.Add (newTab);
+							newTab.Controls.Add (currentFileEditor.GetScintilla ());
+						} else {
+							if (File.Exists (line)) {
+								currentFileEditor = new FileEditor (tabControl, line, line.Substring (line.LastIndexOf ("\\") + 1), File.ReadAllText (line));
+								fileEditors.Add (currentFileEditor);
+								TabPage newTab = new TabPage (currentFileEditor.ShortName ());
+								tabControl.Controls.Add (newTab);
+								newTab.Controls.Add (currentFileEditor.GetScintilla ());
+							}
+						}
+					}
+				}
+			}
+			port = 3002;
+			Client client = new Client(address, port, this);
         }
 
         private void OnNewFile()
         {
-            currentFileEditor = new FileEditor(tabControl);
-            fileEditors.Add(currentFileEditor);
-            TabPage newTab = new TabPage(currentFileEditor.ShortName());
-            tabControl.TabPages.Add(newTab);
-
-            newTab.Controls.Add(currentFileEditor.GetScintilla());
-            tabControl.SelectTab(fileEditors.Count - 1);
-
-            port = 3002;
-            Client client = new Client(address, port, this);
+			currentFileEditor = new FileEditor (tabControl);
+			fileEditors.Add (currentFileEditor);
+			TabPage newTab = new TabPage (currentFileEditor.ShortName ());
+			tabControl.TabPages.Add (newTab);
+			newTab.Controls.Add (currentFileEditor.GetScintilla ());
+			tabControl.SelectTab (fileEditors.Count - 1);
         }
 
         private void TabControl_Selected(object sender, TabControlEventArgs e)
@@ -208,8 +230,20 @@ namespace TextEditor_0._01
                 }
                 i++;
             }
+			saveSession ();
             return true;
         }
+
+		private void saveSession()
+		{
+			using (StreamWriter writer = new StreamWriter (lastSessionName)) {
+				foreach (FileEditor fileEditor in fileEditors)
+					if (fileEditor.IsNew ())
+						writer.WriteLine ("new tab");
+					else
+						writer.WriteLine (fileEditor.Path ());
+			}
+		}
 
         private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
