@@ -13,15 +13,12 @@ using Jint;
 
 namespace TextEditor_0._01
 {
-
-
     public interface ClientMessageDisplay
     {
         void DisplayIncomingText(string msg);
         void DisplayStatusText(string msg);
         void DisplayStatusText(string msg, string type);
     }
-
 
     public partial class MainForm : Form, ClientMessageDisplay
     {
