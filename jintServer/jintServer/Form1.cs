@@ -101,7 +101,7 @@ namespace jintServer
            
             try {
                 
-                string address = "127.0.0.1";
+                string address = textBox1.Text;
                 int port = Int32.Parse(textBox2.Text);
                 server = new Server(address, port, this, this);
 
