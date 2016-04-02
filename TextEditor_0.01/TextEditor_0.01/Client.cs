@@ -33,8 +33,10 @@ namespace TextEditor_0._01
                 messageDisplay.DisplayStatusText("Client connected to Server","status");
                 NetworkStream serverStream = clientSocket.GetStream();
 
-                byte[] inStream = new byte[10025];
-                serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
+                int buffSize = 10 * 1024;
+                byte[] inStream = new byte[buffSize];
+                //serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
+                serverStream.Read(inStream, 0, inStream.Length);
                 string returndata = Encoding.ASCII.GetString(inStream);
                 returndata = returndata.Substring(0, returndata.IndexOf('\0')); //strip nulls
                 messageDisplay.DisplayIncomingText(returndata.Trim());
@@ -64,10 +66,11 @@ namespace TextEditor_0._01
                 messageDisplay.DisplayStatusText("Unable to connect to the server", "warning");
             } 
             messageDisplay.DisplayStatusText("Message #" + messageCount + " sent", "info");
-            byte[] inStream = new byte[10025]; 
+            int buffSize = 10 * 1024;
+            byte[] inStream = new byte[buffSize]; 
             try
             {
-                serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
+                serverStream.Read(inStream, 0, inStream.Length);
                 string returndata = Encoding.ASCII.GetString(inStream);
                 returndata = returndata.Substring(0, returndata.IndexOf('\0')); //strip nulls
 

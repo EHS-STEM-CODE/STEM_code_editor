@@ -96,7 +96,8 @@ namespace jintServer
         private void doChat()
         {
             int requestCount = 0;
-            byte[] bytesFrom = new byte[10025];
+            int buffSize = 10 * 1024;
+            byte[] bytesFrom = new byte[buffSize];
             string dataFromClient = null;
             Byte[] sendBytes = null;
             string serverResponse = null;
@@ -122,7 +123,8 @@ namespace jintServer
                 try
                 {
                     requestCount = requestCount + 1;
-                    networkStream.Read(bytesFrom, 0, (int)clientSocket.ReceiveBufferSize);
+
+                    networkStream.Read(bytesFrom, 0, bytesFrom.Length);
                     dataFromClient = Encoding.ASCII.GetString(bytesFrom);
                     dataFromClient = dataFromClient.Substring(0, dataFromClient.IndexOf('\0'));
                     messageDisplay.displayStatusText("Received code from client No. " + clNo);
@@ -161,6 +163,8 @@ namespace jintServer
         }
     }
 
+
+    //this class serves as the API between the client and the server
     
     public class indy
     {
